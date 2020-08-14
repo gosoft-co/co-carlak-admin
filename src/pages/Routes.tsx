@@ -56,7 +56,7 @@ const RoutesPage = () => {
           >
             Add
           </Button>
-          <Table dataSource={routes?.listRoutes?.items as any}>
+          <Table dataSource={routes?.listRoutes?.items as any} rowKey="id">
             <Column title="Name" dataIndex="name" key="name" />
             <Column title="Status" dataIndex="status" key="status" />
           </Table>

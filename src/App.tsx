@@ -7,6 +7,7 @@ import Authenticate from './pages/auth/Authenticate'
 import Home from './pages/Home'
 import UsersPage from './pages/Users'
 import RoutesPage from './pages/Routes'
+import UserForm from './pages/user/UserForm'
 
 function App() {
   return (

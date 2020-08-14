@@ -7,6 +7,7 @@ import * as serviceWorker from './serviceWorker'
 import Amplify from 'aws-amplify'
 import { AuthProvider } from './auth/AuthContext'
 import awsconfig from './aws-exports'
+import { UserProvider } from './context/UserContext'
 
 Amplify.configure({
   ...awsconfig,
@@ -23,13 +24,13 @@ Amplify.configure({
 })
 
 ReactDOM.render(
-  <React.StrictMode>
-    <BrowserRouter>
-      <AuthProvider>
+  <BrowserRouter>
+    <AuthProvider>
+      <UserProvider>
         <App />
-      </AuthProvider>
-    </BrowserRouter>
-  </React.StrictMode>,
+      </UserProvider>
+    </AuthProvider>
+  </BrowserRouter>,
   document.getElementById('root')
 )
 
