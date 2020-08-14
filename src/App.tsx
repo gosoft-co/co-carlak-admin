@@ -1,26 +1,27 @@
-import React from 'react';
-import logo from './logo.svg';
-import './App.css';
+import React from 'react'
+import 'antd/dist/antd.css'
+import './assets/css/app.scss'
+import { Switch, Route, withRouter } from 'react-router-dom'
+import SecuredRoute from './components/SecuredRoute'
+import Authenticate from './pages/auth/Authenticate'
+import Home from './pages/Home'
+import UsersPage from './pages/Users'
+import RoutesPage from './pages/Routes'
 
 function App() {
   return (
     <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.tsx</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+      <Switch>
+        <Route exact path="/confirm" component={Authenticate} />
+        <Route exact path="/reset" component={Authenticate} />
+        <Route exact path="/register" component={Authenticate} />
+        <SecuredRoute exact path={'/users'} component={UsersPage} />
+        <SecuredRoute exact path={'/routes'} component={RoutesPage} />
+        <SecuredRoute exact path={'/routes/new'} component={RoutesPage} />
+        <SecuredRoute path={'/'} component={Home} />
+      </Switch>
     </div>
-  );
+  )
 }
 
-export default App;
+export default withRouter<any, any>(App)
