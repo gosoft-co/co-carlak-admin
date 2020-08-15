@@ -1,9 +1,19 @@
 import React, { useEffect, useState } from 'react'
 import { useUserContext } from './../context/UserContext'
-import { Table, Tooltip, Button, Form, Input, Select, Drawer } from 'antd'
+import {
+  Table,
+  Tooltip,
+  Button,
+  Form,
+  Input,
+  Select,
+  Drawer,
+  Space,
+} from 'antd'
 import { PlusOutlined } from '@ant-design/icons'
-import { Auth } from 'aws-amplify'
+import { Auth, API } from 'aws-amplify'
 import UserForm, { User } from './user/UserForm'
+import { Link } from 'react-router-dom'
 
 const { Column } = Table
 const { Option } = Select
@@ -14,6 +24,8 @@ const UsersPage = () => {
 
   const [drawerVisible, setDrawerVisible] = useState<boolean>(false)
   const { employees, loadUsers, resetUsersList, resetMethod } = useUserContext()
+
+  let nextToken: string
 
   useEffect(() => {
     const getUsersData = async () => {
@@ -35,6 +47,31 @@ const UsersPage = () => {
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
+
+  const toggleUserEnabled = async (username: string, requestPath: string) => {
+    setLoading(true)
+    try {
+      let apiName = 'AdminQueries'
+      let path = requestPath
+      let myInit = {
+        body: {
+          username: username,
+        },
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: `${(await Auth.currentSession())
+            .getAccessToken()
+            .getJwtToken()}`,
+        },
+      }
+
+      const { NextToken, ...rest } = await API.post(apiName, path, myInit)
+      nextToken = NextToken
+    } catch (err) {
+      console.log(err)
+    }
+    resetUsersList()
+  }
 
   const handleRegister = async (user: User) => {
     setLoading(true)
@@ -102,6 +139,25 @@ const UsersPage = () => {
         />
         <Column title="Habilitado" dataIndex="Enabled" key="Enabled" />
         <Column title="Estado" dataIndex="UserStatus" key="UserStatus" />
+        <Column
+          title="Acciones"
+          key="action"
+          render={(text, record: any) => (
+            <Space size="middle">
+              <Link
+                to={'#'}
+                onClick={() =>
+                  toggleUserEnabled(
+                    record.Username,
+                    record.Enabled ? '/disableUser' : '/enableUser'
+                  )
+                }
+              >
+                {record.Enabled ? 'Deshabilitar' : 'Habilitar'}
+              </Link>
+            </Space>
+          )}
+        />
       </Table>
 
       <Drawer
@@ -122,9 +178,6 @@ const UsersPage = () => {
             >
               Cancel
             </Button>
-            {/* <Button onClick={handleSubmit} type="primary">
-              Crear
-            </Button> */}
           </div>
         }
       >

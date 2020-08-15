@@ -133,7 +133,8 @@ const useUser = () => {
 
       try {
         let apiName = 'AdminQueries'
-        let path = '/listUsersInGroup'
+        //let path = '/listUsersInGroup'
+        let path = '/listUsers'
         let myInit = {
           queryStringParameters: {
             groupname: group,
