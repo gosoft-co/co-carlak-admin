@@ -10,6 +10,8 @@ import {
   UpdateRouteMutation,
   UpdateRouteMutationVariables,
   UpdateRouteInput,
+  DeleteRouteMutation,
+  DeleteRouteMutationVariables,
 } from '../API'
 import { Table, Button, Tooltip, Drawer, Space } from 'antd'
 import {
@@ -17,12 +19,15 @@ import {
   CheckOutlined,
   CloseOutlined,
   FormOutlined,
+  DeleteOutlined,
+  CalendarOutlined,
 } from '@ant-design/icons'
 import RouteForm from './routes/RouteForm'
-import { createRoute, updateRoute } from '../graphql/mutations'
+import { createRoute, updateRoute, deleteRoute } from '../graphql/mutations'
 import Route, { mapListRoutes } from '../models/route'
 import callGraphQL, { SubscriptionValue } from '../models/graphql-api'
 import { onCreateRoute } from '../graphql/subscriptions'
+import { Link } from 'react-router-dom'
 
 const { Column } = Table
 
@@ -54,7 +59,9 @@ const RoutesPage = () => {
   useEffect(() => {
     const fetchRoutes = async () => {
       try {
-        const response = await callGraphQL<ListRoutesQuery>(listRoutes)
+        const response = await callGraphQL<ListRoutesQuery>(listRoutes, {
+          variables: { filter: { _deleted: false } },
+        })
         const routes = mapListRoutes(response)
         setRoutes(routes)
       } catch (error) {
@@ -110,7 +117,7 @@ const RoutesPage = () => {
     }
   }
 
-  const handleEditRoute = async (route: any) => {
+  const handleEditRoute = (route: UpdateRouteInput) => {
     setFormState(route)
     setDrawerVisible(true)
   }
@@ -131,11 +138,32 @@ const RoutesPage = () => {
     }
   }
 
+  const handleDeleteRoute = async (id: string, _version: number) => {
+    setLoading(true)
+    try {
+      await callGraphQL<DeleteRouteMutation>(deleteRoute, {
+        input: { id: id, _version: _version },
+      } as DeleteRouteMutationVariables)
+      setFormState(initialState)
+      setLoading(false)
+      setDrawerVisible(false)
+    } catch (err) {
+      setLocalError(err)
+      setLoading(false)
+      console.log(err)
+    }
+  }
+
   const toggleEnable = (route: UpdateRouteInput) => {
     handleUpdateRoute({
       ...route,
       ['status']: route.status === '1' ? '0' : '1',
     })
+  }
+
+  const toggleDrawer = (open: boolean) => {
+    setFormState(initialState)
+    setDrawerVisible(open)
   }
 
   return (
@@ -146,7 +174,7 @@ const RoutesPage = () => {
           shape="circle"
           icon={<PlusOutlined />}
           style={{ marginBottom: 10 }}
-          onClick={() => setDrawerVisible(true)}
+          onClick={() => toggleDrawer(true)}
         />
       </Tooltip>
 
@@ -158,6 +186,23 @@ const RoutesPage = () => {
           render={(text, record: Route) => (
             <Space size="middle">
               {record.status === '1' ? 'Activo' : 'Inactivo'}
+            </Space>
+          )}
+        />
+        <Column
+          title="Repartos"
+          key="deliveries"
+          render={(text, record: Route) => (
+            <Space size="middle">
+              <Tooltip title="Repartos">
+                <Link to={'/routes/deliveries'}>
+                  <Button
+                    shape="circle"
+                    icon={<CalendarOutlined />}
+                    size="small"
+                  />
+                </Link>
+              </Tooltip>
             </Space>
           )}
         />
@@ -193,6 +238,16 @@ const RoutesPage = () => {
                   onClick={() => handleEditRoute(record as UpdateRouteInput)}
                 />
               </Tooltip>
+              <Tooltip title="Eliminar">
+                <Button
+                  shape="circle"
+                  icon={<DeleteOutlined />}
+                  size="small"
+                  onClick={() =>
+                    handleDeleteRoute(record.id || '', record._version || 1)
+                  }
+                />
+              </Tooltip>
             </Space>
           )}
         />
@@ -201,7 +256,7 @@ const RoutesPage = () => {
       <Drawer
         title="Crear nueva ruta"
         width={520}
-        onClose={() => setDrawerVisible(false)}
+        onClose={() => toggleDrawer(false)}
         visible={drawerVisible}
         bodyStyle={{ paddingBottom: 80 }}
         footer={
@@ -211,7 +266,7 @@ const RoutesPage = () => {
             }}
           >
             <Button
-              onClick={() => setDrawerVisible(false)}
+              onClick={() => toggleDrawer(false)}
               style={{ marginRight: 8 }}
             >
               Cancel
@@ -223,7 +278,7 @@ const RoutesPage = () => {
           handleFormRoute={handleForm}
           loading={loading}
           error={localError}
-          formState={formState}
+          formState={formState as any}
           setFormState={setFormState}
         />
       </Drawer>
