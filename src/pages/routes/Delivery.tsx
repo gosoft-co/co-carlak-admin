@@ -1,31 +1,53 @@
-import React from 'react'
-import moment from 'moment'
+import React, { useState, useEffect } from 'react'
+import { LeftOutlined, RightOutlined } from '@ant-design/icons'
+import moment, { Moment } from 'moment'
 import 'moment/locale/es'
 
 const Delivery = () => {
   moment.locale('es')
+  const [currentMonth, setCurrentMonth] = useState<string>(
+    moment().format('YYYY-MM')
+  )
 
-  const currentMonthDates = new Array(moment().daysInMonth())
-    .fill(null)
-    .map((x, i) => moment().startOf('month').add(i, 'days'))
+  const [currentMonthDates, setcurrentMonthDates] = useState<Moment[]>([])
+
+  useEffect(() => {
+    setcurrentMonthDates(
+      new Array(moment(currentMonth).daysInMonth())
+        .fill(null)
+        .map((x, i) => moment(currentMonth).startOf('month').add(i, 'days'))
+    )
+  }, [currentMonth])
 
   const pickDay = (index: number) => {
-    console.log(currentMonthDates[index])
+    //console.log(currentMonthDates[index])
   }
+
+  const previousMonth = () => {
+    setCurrentMonth(
+      moment(currentMonth, 'YYYY-MM').subtract(1, 'month').format('YYYY-MM')
+    )
+  }
+
+  const nextMonth = () => {
+    setCurrentMonth(
+      moment(currentMonth, 'YYYY-MM').add(1, 'month').format('YYYY-MM')
+    )
+  }
+
   return (
     <>
       <div className="calendar">
         <div className="month-indicator">
-          <time
-            dateTime={
-              currentMonthDates[0].format('y') +
-              '-' +
-              currentMonthDates[0].format('MM')
-            }
-          >
-            {currentMonthDates[0].format('MMMM')}{' '}
-            {currentMonthDates[0].format('y')}
-          </time>
+          <button onClick={previousMonth}>
+            <LeftOutlined />
+          </button>
+          <time dateTime={currentMonth}>{`${moment(currentMonth).format(
+            'MMMM'
+          )} ${moment(currentMonth).format('y')}`}</time>
+          <button onClick={nextMonth}>
+            <RightOutlined />
+          </button>
         </div>
         <div className="day-of-week">
           <div>Lu</div>
