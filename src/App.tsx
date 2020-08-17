@@ -7,7 +7,7 @@ import Authenticate from './pages/auth/Authenticate'
 import Home from './pages/Home'
 import UsersPage from './pages/Users'
 import RoutesPage from './pages/Routes'
-import UserForm from './pages/user/UserForm'
+import Delivery from './pages/routes/Delivery'
 
 function App() {
   return (
@@ -18,6 +18,7 @@ function App() {
         <Route exact path="/register" component={Authenticate} />
         <SecuredRoute exact path={'/users'} component={UsersPage} />
         <SecuredRoute exact path={'/routes'} component={RoutesPage} />
+        <SecuredRoute exact path={'/routes/deliveries'} component={Delivery} />
         <SecuredRoute exact path={'/routes/new'} component={RoutesPage} />
         <SecuredRoute path={'/'} component={Home} />
       </Switch>
