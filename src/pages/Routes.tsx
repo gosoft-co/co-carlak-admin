@@ -62,6 +62,7 @@ const RoutesPage = () => {
         const response = await callGraphQL<ListRoutesQuery>(listRoutes, {
           variables: { filter: { _deleted: false } },
         })
+        console.log(response)
         const routes = mapListRoutes(response)
         setRoutes(routes)
       } catch (error) {
@@ -195,7 +196,7 @@ const RoutesPage = () => {
           render={(text, record: Route) => (
             <Space size="middle">
               <Tooltip title="Repartos">
-                <Link to={'/routes/deliveries'}>
+                <Link to={'/routes/deliveries/' + record.id}>
                   <Button
                     shape="circle"
                     icon={<CalendarOutlined />}

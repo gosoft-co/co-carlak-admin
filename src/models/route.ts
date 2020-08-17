@@ -4,6 +4,8 @@ import { GraphQLResult } from '@aws-amplify/api'
 interface Route {
   id?: string
   name?: string
+  accounts?: any
+  deliveries?: any
   status?: string
   _version?: number | null
 }
@@ -17,6 +19,8 @@ function mapListRoutesQuery(
         ({
           id: route?.id,
           name: route?.name,
+          accounts: route?.accounts,
+          deliveries: route?.deliveries,
           status: route?.status,
           _version: route?._version,
         } as Route)

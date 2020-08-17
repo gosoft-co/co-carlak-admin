@@ -7,10 +7,12 @@ export type PickDay = (day: Moment) => void
 
 export interface IState {
   handlerPickDay: PickDay
+  shedules?: any
 }
 
-const Calendar = ({ handlerPickDay }: IState) => {
+const Calendar = ({ handlerPickDay, shedules }: IState) => {
   moment.locale('es')
+  console.log(shedules)
   const [currentMonth, setCurrentMonth] = useState<string>(
     moment().format('YYYY-MM')
   )
@@ -70,9 +72,19 @@ const Calendar = ({ handlerPickDay }: IState) => {
                   }
                 : {}
             }
+            className={
+              shedules &&
+              shedules.find(
+                (s: any) => s.date === currentMonthDates[i].format('YYYY-MM-DD')
+              )
+                ? 'overdue'
+                : ''
+            }
             onClick={() => handlerPickDay(currentMonthDates[i])}
           >
-            <time dateTime="2019-02-01">{i + 1}</time>
+            <time dateTime={currentMonthDates[i].format('YYYY-MM-DD')}>
+              {i + 1}
+            </time>
           </button>
         ))}
       </div>
