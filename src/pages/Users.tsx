@@ -1,15 +1,6 @@
 import React, { useEffect, useState } from 'react'
 import { useUserContext } from './../context/UserContext'
-import {
-  Table,
-  Tooltip,
-  Button,
-  Form,
-  Input,
-  Select,
-  Drawer,
-  Space,
-} from 'antd'
+import { Table, Tooltip, Button, Select, Drawer, Space } from 'antd'
 import { PlusOutlined } from '@ant-design/icons'
 import { Auth, API } from 'aws-amplify'
 import UserForm, { User } from './user/UserForm'
