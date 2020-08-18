@@ -8,6 +8,7 @@ import Home from './pages/Home'
 import UsersPage from './pages/Users'
 import RoutesPage from './pages/Routes'
 import Delivery from './pages/routes/Delivery'
+import ProductPage from './pages/Product'
 
 function App() {
   return (
@@ -16,6 +17,7 @@ function App() {
         <Route exact path="/confirm" component={Authenticate} />
         <Route exact path="/reset" component={Authenticate} />
         <Route exact path="/register" component={Authenticate} />
+        <SecuredRoute exact path={'/products'} component={ProductPage} />
         <SecuredRoute exact path={'/users'} component={UsersPage} />
         <SecuredRoute exact path={'/routes'} component={RoutesPage} />
         <SecuredRoute exact path={'/routes/deliveries'} component={Delivery} />

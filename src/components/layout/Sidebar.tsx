@@ -30,7 +30,7 @@ const Sidebar = () => {
           <Link to={'/users'}>Usuarios</Link>
         </Menu.Item>
         <Menu.Item key="4" icon={<AppstoreOutlined />}>
-          Productos
+          <Link to={'/products'}>Productos</Link>
         </Menu.Item>
       </Menu>
     </Sider>
