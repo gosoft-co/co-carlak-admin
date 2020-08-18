@@ -1,11 +1,20 @@
 import React, { useState, useReducer, useEffect } from 'react'
-import { PlusOutlined, FormOutlined } from '@ant-design/icons'
-import { Tooltip, Button, Drawer, List, Avatar, Statistic } from 'antd'
+import {
+  PlusOutlined,
+  FormOutlined,
+  CloseOutlined,
+  CheckOutlined,
+} from '@ant-design/icons'
+import { Tooltip, Button, Drawer, List, Avatar, Statistic, Badge } from 'antd'
 import { API, graphqlOperation } from 'aws-amplify'
 import { onCreateProduct, onUpdateProduct } from '../graphql/subscriptions'
 import { listProducts } from '../graphql/queries'
 import { ListProductsQuery } from '../API'
-import { createProduct, updateProduct } from '../graphql/mutations'
+import {
+  createProduct,
+  updateProduct,
+  deleteProduct,
+} from '../graphql/mutations'
 import ProductForm from './products/ProductForm'
 
 export type Product = {
@@ -14,6 +23,7 @@ export type Product = {
   description: string
   price: number
   _version?: number
+  _deleted?: boolean
 }
 
 type AppState = {
@@ -181,6 +191,28 @@ const ProductPage = () => {
     }
   }
 
+  const handleDeleteProduct = async (item: Product) => {
+    setLoading(true)
+
+    const { id, _version } = item
+
+    const product = {
+      id,
+      _version,
+    }
+
+    try {
+      await API.graphql(graphqlOperation(deleteProduct, { input: product }))
+
+      setLoading(false)
+      setDrawerVisibility(false)
+    } catch (err) {
+      setLocalError(err)
+      setLoading(false)
+      console.log(err)
+    }
+  }
+
   const handleEditProduct = (product: Product) => {
     dispatch({
       type: 'SET_FORM_EDIT_DATA',
@@ -221,12 +253,37 @@ const ProductPage = () => {
           <List.Item
             actions={[
               <Statistic title="Precio" value={item.price} precision={2} />,
+              <Badge
+                className="site-badge-count-109"
+                count={30}
+                style={{ backgroundColor: '#52c41a' }}
+              />,
+              item._deleted ? 'Inactivo' : 'Activo',
+              !item._deleted ? (
+                <Tooltip title="Desactivar">
+                  <Button
+                    shape="circle"
+                    icon={<CloseOutlined />}
+                    size="small"
+                    onClick={() => handleDeleteProduct(item)}
+                  />
+                </Tooltip>
+              ) : (
+                <Tooltip title="Activar">
+                  <Button
+                    shape="circle"
+                    icon={<CheckOutlined />}
+                    size="small"
+                    onClick={() => handleDeleteProduct(item)}
+                  />
+                </Tooltip>
+              ),
               <Tooltip title="Editar">
                 <Button
                   shape="circle"
                   icon={<FormOutlined />}
                   size="small"
-                  onClick={() => handleEditProduct(item)}
+                  onClick={() => handleDeleteProduct(item)}
                 />
               </Tooltip>,
             ]}
