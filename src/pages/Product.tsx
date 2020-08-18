@@ -1,11 +1,11 @@
 import React, { useState, useReducer, useEffect } from 'react'
 import { PlusOutlined, FormOutlined } from '@ant-design/icons'
-import { Tooltip, Button, Drawer, List, Avatar } from 'antd'
+import { Tooltip, Button, Drawer, List, Avatar, Statistic } from 'antd'
 import { API, graphqlOperation } from 'aws-amplify'
-import { onCreateProduct } from '../graphql/subscriptions'
+import { onCreateProduct, onUpdateProduct } from '../graphql/subscriptions'
 import { listProducts } from '../graphql/queries'
 import { ListProductsQuery } from '../API'
-import { createProduct } from '../graphql/mutations'
+import { createProduct, updateProduct } from '../graphql/mutations'
 import ProductForm from './products/ProductForm'
 
 export type Product = {
@@ -13,6 +13,7 @@ export type Product = {
   name: string
   description: string
   price: number
+  _version?: number
 }
 
 type AppState = {
@@ -30,6 +31,13 @@ const reducer = (state: AppState, action: Action) => {
       return { ...state, formData: { ...state.formData, ...action.payload } }
     case 'SET_FORM_EDIT_DATA':
       return { ...state, formData: { ...state.formData, ...action.payload } }
+    case 'UPDATE_PRODUCT_ITEM':
+      return {
+        ...state,
+        products: state.products.map((product, i) =>
+          product.id === action.payload.id ? action.payload : product
+        ),
+      }
     default:
       return state
   }
@@ -50,6 +58,10 @@ type Action =
     }
   | {
       type: 'SET_FORM_EDIT_DATA'
+      payload: Product
+    }
+  | {
+      type: 'UPDATE_PRODUCT_ITEM'
       payload: Product
     }
 
@@ -88,6 +100,19 @@ const ProductPage = () => {
     return () => subscription.unsubscribe()
   }, [])
 
+  useEffect(() => {
+    const onUpdateSubscription = (API.graphql(
+      graphqlOperation(onUpdateProduct)
+    ) as any).subscribe({
+      next: (eventData: SubscriptionEvent<{ onUpdateProduct: Product }>) => {
+        const payload = eventData.value.data.onUpdateProduct
+        dispatch({ type: 'UPDATE_PRODUCT_ITEM', payload })
+      },
+    })
+
+    return () => onUpdateSubscription.unsubscribe()
+  })
+
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) =>
     dispatch({
       type: 'SET_FORM_DATA',
@@ -102,6 +127,14 @@ const ProductPage = () => {
       type: 'QUERY',
       payload: products.data.listProducts?.items as Product[],
     })
+  }
+
+  const handleSubmitForm = () => {
+    if (state.formData.id) {
+      editProduct()
+    } else {
+      createNewProduct()
+    }
   }
 
   const createNewProduct = async () => {
@@ -124,6 +157,30 @@ const ProductPage = () => {
     }
   }
 
+  const editProduct = async () => {
+    setLoading(true)
+    const { id, name, description, price, _version } = state.formData
+
+    const product = {
+      id,
+      name,
+      description,
+      price,
+      _version,
+    }
+
+    try {
+      await API.graphql(graphqlOperation(updateProduct, { input: product }))
+
+      setLoading(false)
+      setDrawerVisibility(false)
+    } catch (err) {
+      setLocalError(err)
+      setLoading(false)
+      console.log(err)
+    }
+  }
+
   const handleEditProduct = (product: Product) => {
     dispatch({
       type: 'SET_FORM_EDIT_DATA',
@@ -133,6 +190,16 @@ const ProductPage = () => {
   }
 
   const toggleDrawer = (open: boolean) => {
+    if (open === false) {
+      dispatch({
+        type: 'SET_FORM_EDIT_DATA',
+        payload: {
+          ...initialState.formData,
+          id: undefined,
+          _version: undefined,
+        },
+      })
+    }
     setDrawerVisibility(open)
   }
 
@@ -153,6 +220,7 @@ const ProductPage = () => {
         renderItem={(item) => (
           <List.Item
             actions={[
+              <Statistic title="Precio" value={item.price} precision={2} />,
               <Tooltip title="Editar">
                 <Button
                   shape="circle"
@@ -164,9 +232,7 @@ const ProductPage = () => {
             ]}
           >
             <List.Item.Meta
-              avatar={
-                <Avatar src="https://zos.alipayobjects.com/rmsportal/ODTLcjxAfvqbxHnVXCYX.png" />
-              }
+              avatar={<Avatar src="http://lorempixel.com/48/48/food/" />}
               title={item.name}
               description={item.description}
             />
@@ -174,7 +240,9 @@ const ProductPage = () => {
         )}
       />
       <Drawer
-        title="Crear nuevo producto"
+        title={
+          state.formData.id ? 'Actualizar Producto' : 'Crear nuevo producto'
+        }
         width={520}
         onClose={() => toggleDrawer(false)}
         visible={drawerVisibility}
@@ -197,7 +265,7 @@ const ProductPage = () => {
         <ProductForm
           loading={loading}
           handleChange={handleChange}
-          handleSubmitForm={createNewProduct}
+          handleSubmitForm={handleSubmitForm}
           formData={state.formData}
         />
       </Drawer>
