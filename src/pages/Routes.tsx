@@ -62,7 +62,7 @@ const RoutesPage = () => {
         const response = await callGraphQL<ListRoutesQuery>(listRoutes, {
           variables: { filter: { _deleted: false } },
         })
-        console.log(response)
+
         const routes = mapListRoutes(response)
         setRoutes(routes)
       } catch (error) {

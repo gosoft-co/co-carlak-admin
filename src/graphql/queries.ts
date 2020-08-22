@@ -2,87 +2,6 @@
 /* eslint-disable */
 // this is an auto generated file. This will be overwritten
 
-export const syncUsers = /* GraphQL */ `
-  query SyncUsers(
-    $filter: ModelUserFilterInput
-    $limit: Int
-    $nextToken: String
-    $lastSync: AWSTimestamp
-  ) {
-    syncUsers(
-      filter: $filter
-      limit: $limit
-      nextToken: $nextToken
-      lastSync: $lastSync
-    ) {
-      items {
-        id
-        username
-        deliveries {
-          nextToken
-          startedAt
-        }
-        _version
-        _deleted
-        _lastChangedAt
-        createdAt
-        updatedAt
-      }
-      nextToken
-      startedAt
-    }
-  }
-`;
-export const getUser = /* GraphQL */ `
-  query GetUser($id: ID!) {
-    getUser(id: $id) {
-      id
-      username
-      deliveries {
-        items {
-          id
-          _version
-          _deleted
-          _lastChangedAt
-          createdAt
-          updatedAt
-        }
-        nextToken
-        startedAt
-      }
-      _version
-      _deleted
-      _lastChangedAt
-      createdAt
-      updatedAt
-    }
-  }
-`;
-export const listUsers = /* GraphQL */ `
-  query ListUsers(
-    $filter: ModelUserFilterInput
-    $limit: Int
-    $nextToken: String
-  ) {
-    listUsers(filter: $filter, limit: $limit, nextToken: $nextToken) {
-      items {
-        id
-        username
-        deliveries {
-          nextToken
-          startedAt
-        }
-        _version
-        _deleted
-        _lastChangedAt
-        createdAt
-        updatedAt
-      }
-      nextToken
-      startedAt
-    }
-  }
-`;
 export const syncDeliveryUsers = /* GraphQL */ `
   query SyncDeliveryUsers(
     $filter: ModelDeliveryUsersFilterInput
@@ -98,15 +17,7 @@ export const syncDeliveryUsers = /* GraphQL */ `
     ) {
       items {
         id
-        user {
-          id
-          username
-          _version
-          _deleted
-          _lastChangedAt
-          createdAt
-          updatedAt
-        }
+        user
         delivery {
           id
           date
@@ -157,6 +68,10 @@ export const syncDeliveries = /* GraphQL */ `
           nextToken
           startedAt
         }
+        products {
+          nextToken
+          startedAt
+        }
         _version
         _deleted
         _lastChangedAt
@@ -194,6 +109,21 @@ export const getDelivery = /* GraphQL */ `
       users {
         items {
           id
+          user
+          _version
+          _deleted
+          _lastChangedAt
+          createdAt
+          updatedAt
+        }
+        nextToken
+        startedAt
+      }
+      products {
+        items {
+          id
+          quantity
+          price
           _version
           _deleted
           _lastChangedAt
@@ -232,6 +162,10 @@ export const listDeliverys = /* GraphQL */ `
           updatedAt
         }
         users {
+          nextToken
+          startedAt
+        }
+        products {
           nextToken
           startedAt
         }
@@ -467,6 +401,143 @@ export const listAccounts = /* GraphQL */ `
         name
         lastName
         routes {
+          nextToken
+          startedAt
+        }
+        _version
+        _deleted
+        _lastChangedAt
+        createdAt
+        updatedAt
+      }
+      nextToken
+      startedAt
+    }
+  }
+`;
+export const syncDeliveryProducts = /* GraphQL */ `
+  query SyncDeliveryProducts(
+    $filter: ModelDeliveryProductsFilterInput
+    $limit: Int
+    $nextToken: String
+    $lastSync: AWSTimestamp
+  ) {
+    syncDeliveryProducts(
+      filter: $filter
+      limit: $limit
+      nextToken: $nextToken
+      lastSync: $lastSync
+    ) {
+      items {
+        id
+        quantity
+        price
+        product {
+          id
+          name
+          description
+          price
+          _version
+          _deleted
+          _lastChangedAt
+          createdAt
+          updatedAt
+        }
+        delivery {
+          id
+          date
+          _version
+          _deleted
+          _lastChangedAt
+          createdAt
+          updatedAt
+        }
+        _version
+        _deleted
+        _lastChangedAt
+        createdAt
+        updatedAt
+      }
+      nextToken
+      startedAt
+    }
+  }
+`;
+export const syncProducts = /* GraphQL */ `
+  query SyncProducts(
+    $filter: ModelProductFilterInput
+    $limit: Int
+    $nextToken: String
+    $lastSync: AWSTimestamp
+  ) {
+    syncProducts(
+      filter: $filter
+      limit: $limit
+      nextToken: $nextToken
+      lastSync: $lastSync
+    ) {
+      items {
+        id
+        name
+        description
+        price
+        deliveries {
+          nextToken
+          startedAt
+        }
+        _version
+        _deleted
+        _lastChangedAt
+        createdAt
+        updatedAt
+      }
+      nextToken
+      startedAt
+    }
+  }
+`;
+export const getProduct = /* GraphQL */ `
+  query GetProduct($id: ID!) {
+    getProduct(id: $id) {
+      id
+      name
+      description
+      price
+      deliveries {
+        items {
+          id
+          quantity
+          price
+          _version
+          _deleted
+          _lastChangedAt
+          createdAt
+          updatedAt
+        }
+        nextToken
+        startedAt
+      }
+      _version
+      _deleted
+      _lastChangedAt
+      createdAt
+      updatedAt
+    }
+  }
+`;
+export const listProducts = /* GraphQL */ `
+  query ListProducts(
+    $filter: ModelProductFilterInput
+    $limit: Int
+    $nextToken: String
+  ) {
+    listProducts(filter: $filter, limit: $limit, nextToken: $nextToken) {
+      items {
+        id
+        name
+        description
+        price
+        deliveries {
           nextToken
           startedAt
         }

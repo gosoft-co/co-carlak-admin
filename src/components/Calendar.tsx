@@ -3,7 +3,10 @@ import { LeftOutlined, RightOutlined } from '@ant-design/icons'
 import moment, { Moment } from 'moment'
 import 'moment/locale/es'
 
-export type PickDay = (day: Moment) => void
+export type PickDay = (
+  e: React.MouseEvent<HTMLButtonElement, MouseEvent>,
+  day: Moment
+) => void
 
 export interface IState {
   handlerPickDay: PickDay
@@ -12,7 +15,6 @@ export interface IState {
 
 const Calendar = ({ handlerPickDay, shedules }: IState) => {
   moment.locale('es')
-  console.log(shedules)
   const [currentMonth, setCurrentMonth] = useState<string>(
     moment().format('YYYY-MM')
   )
@@ -80,7 +82,7 @@ const Calendar = ({ handlerPickDay, shedules }: IState) => {
                 ? 'overdue'
                 : ''
             }
-            onClick={() => handlerPickDay(currentMonthDates[i])}
+            onClick={(e) => handlerPickDay(e, currentMonthDates[i])}
           >
             <time dateTime={currentMonthDates[i].format('YYYY-MM-DD')}>
               {i + 1}

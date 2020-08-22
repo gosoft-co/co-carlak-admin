@@ -2,98 +2,11 @@
 /* eslint-disable */
 // this is an auto generated file. This will be overwritten
 
-export const onCreateUser = /* GraphQL */ `
-  subscription OnCreateUser {
-    onCreateUser {
-      id
-      username
-      deliveries {
-        items {
-          id
-          _version
-          _deleted
-          _lastChangedAt
-          createdAt
-          updatedAt
-        }
-        nextToken
-        startedAt
-      }
-      _version
-      _deleted
-      _lastChangedAt
-      createdAt
-      updatedAt
-    }
-  }
-`;
-export const onUpdateUser = /* GraphQL */ `
-  subscription OnUpdateUser {
-    onUpdateUser {
-      id
-      username
-      deliveries {
-        items {
-          id
-          _version
-          _deleted
-          _lastChangedAt
-          createdAt
-          updatedAt
-        }
-        nextToken
-        startedAt
-      }
-      _version
-      _deleted
-      _lastChangedAt
-      createdAt
-      updatedAt
-    }
-  }
-`;
-export const onDeleteUser = /* GraphQL */ `
-  subscription OnDeleteUser {
-    onDeleteUser {
-      id
-      username
-      deliveries {
-        items {
-          id
-          _version
-          _deleted
-          _lastChangedAt
-          createdAt
-          updatedAt
-        }
-        nextToken
-        startedAt
-      }
-      _version
-      _deleted
-      _lastChangedAt
-      createdAt
-      updatedAt
-    }
-  }
-`;
 export const onCreateDeliveryUsers = /* GraphQL */ `
   subscription OnCreateDeliveryUsers {
     onCreateDeliveryUsers {
       id
-      user {
-        id
-        username
-        deliveries {
-          nextToken
-          startedAt
-        }
-        _version
-        _deleted
-        _lastChangedAt
-        createdAt
-        updatedAt
-      }
+      user
       delivery {
         id
         date
@@ -108,6 +21,10 @@ export const onCreateDeliveryUsers = /* GraphQL */ `
           updatedAt
         }
         users {
+          nextToken
+          startedAt
+        }
+        products {
           nextToken
           startedAt
         }
@@ -129,19 +46,7 @@ export const onUpdateDeliveryUsers = /* GraphQL */ `
   subscription OnUpdateDeliveryUsers {
     onUpdateDeliveryUsers {
       id
-      user {
-        id
-        username
-        deliveries {
-          nextToken
-          startedAt
-        }
-        _version
-        _deleted
-        _lastChangedAt
-        createdAt
-        updatedAt
-      }
+      user
       delivery {
         id
         date
@@ -156,6 +61,10 @@ export const onUpdateDeliveryUsers = /* GraphQL */ `
           updatedAt
         }
         users {
+          nextToken
+          startedAt
+        }
+        products {
           nextToken
           startedAt
         }
@@ -177,19 +86,7 @@ export const onDeleteDeliveryUsers = /* GraphQL */ `
   subscription OnDeleteDeliveryUsers {
     onDeleteDeliveryUsers {
       id
-      user {
-        id
-        username
-        deliveries {
-          nextToken
-          startedAt
-        }
-        _version
-        _deleted
-        _lastChangedAt
-        createdAt
-        updatedAt
-      }
+      user
       delivery {
         id
         date
@@ -204,6 +101,10 @@ export const onDeleteDeliveryUsers = /* GraphQL */ `
           updatedAt
         }
         users {
+          nextToken
+          startedAt
+        }
+        products {
           nextToken
           startedAt
         }
@@ -247,6 +148,21 @@ export const onCreateDelivery = /* GraphQL */ `
       users {
         items {
           id
+          user
+          _version
+          _deleted
+          _lastChangedAt
+          createdAt
+          updatedAt
+        }
+        nextToken
+        startedAt
+      }
+      products {
+        items {
+          id
+          quantity
+          price
           _version
           _deleted
           _lastChangedAt
@@ -290,6 +206,21 @@ export const onUpdateDelivery = /* GraphQL */ `
       users {
         items {
           id
+          user
+          _version
+          _deleted
+          _lastChangedAt
+          createdAt
+          updatedAt
+        }
+        nextToken
+        startedAt
+      }
+      products {
+        items {
+          id
+          quantity
+          price
           _version
           _deleted
           _lastChangedAt
@@ -333,6 +264,21 @@ export const onDeleteDelivery = /* GraphQL */ `
       users {
         items {
           id
+          user
+          _version
+          _deleted
+          _lastChangedAt
+          createdAt
+          updatedAt
+        }
+        nextToken
+        startedAt
+      }
+      products {
+        items {
+          id
+          quantity
+          price
           _version
           _deleted
           _lastChangedAt
@@ -660,6 +606,261 @@ export const onDeleteAccount = /* GraphQL */ `
       routes {
         items {
           id
+          _version
+          _deleted
+          _lastChangedAt
+          createdAt
+          updatedAt
+        }
+        nextToken
+        startedAt
+      }
+      _version
+      _deleted
+      _lastChangedAt
+      createdAt
+      updatedAt
+    }
+  }
+`;
+export const onCreateDeliveryProducts = /* GraphQL */ `
+  subscription OnCreateDeliveryProducts {
+    onCreateDeliveryProducts {
+      id
+      quantity
+      price
+      product {
+        id
+        name
+        description
+        price
+        deliveries {
+          nextToken
+          startedAt
+        }
+        _version
+        _deleted
+        _lastChangedAt
+        createdAt
+        updatedAt
+      }
+      delivery {
+        id
+        date
+        route {
+          id
+          name
+          status
+          _version
+          _deleted
+          _lastChangedAt
+          createdAt
+          updatedAt
+        }
+        users {
+          nextToken
+          startedAt
+        }
+        products {
+          nextToken
+          startedAt
+        }
+        _version
+        _deleted
+        _lastChangedAt
+        createdAt
+        updatedAt
+      }
+      _version
+      _deleted
+      _lastChangedAt
+      createdAt
+      updatedAt
+    }
+  }
+`;
+export const onUpdateDeliveryProducts = /* GraphQL */ `
+  subscription OnUpdateDeliveryProducts {
+    onUpdateDeliveryProducts {
+      id
+      quantity
+      price
+      product {
+        id
+        name
+        description
+        price
+        deliveries {
+          nextToken
+          startedAt
+        }
+        _version
+        _deleted
+        _lastChangedAt
+        createdAt
+        updatedAt
+      }
+      delivery {
+        id
+        date
+        route {
+          id
+          name
+          status
+          _version
+          _deleted
+          _lastChangedAt
+          createdAt
+          updatedAt
+        }
+        users {
+          nextToken
+          startedAt
+        }
+        products {
+          nextToken
+          startedAt
+        }
+        _version
+        _deleted
+        _lastChangedAt
+        createdAt
+        updatedAt
+      }
+      _version
+      _deleted
+      _lastChangedAt
+      createdAt
+      updatedAt
+    }
+  }
+`;
+export const onDeleteDeliveryProducts = /* GraphQL */ `
+  subscription OnDeleteDeliveryProducts {
+    onDeleteDeliveryProducts {
+      id
+      quantity
+      price
+      product {
+        id
+        name
+        description
+        price
+        deliveries {
+          nextToken
+          startedAt
+        }
+        _version
+        _deleted
+        _lastChangedAt
+        createdAt
+        updatedAt
+      }
+      delivery {
+        id
+        date
+        route {
+          id
+          name
+          status
+          _version
+          _deleted
+          _lastChangedAt
+          createdAt
+          updatedAt
+        }
+        users {
+          nextToken
+          startedAt
+        }
+        products {
+          nextToken
+          startedAt
+        }
+        _version
+        _deleted
+        _lastChangedAt
+        createdAt
+        updatedAt
+      }
+      _version
+      _deleted
+      _lastChangedAt
+      createdAt
+      updatedAt
+    }
+  }
+`;
+export const onCreateProduct = /* GraphQL */ `
+  subscription OnCreateProduct {
+    onCreateProduct {
+      id
+      name
+      description
+      price
+      deliveries {
+        items {
+          id
+          quantity
+          price
+          _version
+          _deleted
+          _lastChangedAt
+          createdAt
+          updatedAt
+        }
+        nextToken
+        startedAt
+      }
+      _version
+      _deleted
+      _lastChangedAt
+      createdAt
+      updatedAt
+    }
+  }
+`;
+export const onUpdateProduct = /* GraphQL */ `
+  subscription OnUpdateProduct {
+    onUpdateProduct {
+      id
+      name
+      description
+      price
+      deliveries {
+        items {
+          id
+          quantity
+          price
+          _version
+          _deleted
+          _lastChangedAt
+          createdAt
+          updatedAt
+        }
+        nextToken
+        startedAt
+      }
+      _version
+      _deleted
+      _lastChangedAt
+      createdAt
+      updatedAt
+    }
+  }
+`;
+export const onDeleteProduct = /* GraphQL */ `
+  subscription OnDeleteProduct {
+    onDeleteProduct {
+      id
+      name
+      description
+      price
+      deliveries {
+        items {
+          id
+          quantity
+          price
           _version
           _deleted
           _lastChangedAt

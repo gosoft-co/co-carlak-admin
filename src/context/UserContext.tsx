@@ -1,5 +1,5 @@
 /* eslint-disable react-hooks/exhaustive-deps */
-import { useReducer, useCallback, useEffect, useState } from 'react'
+import { useReducer, useCallback } from 'react'
 import constate from 'constate'
 import { Auth, API } from 'aws-amplify'
 
@@ -27,7 +27,7 @@ type RESPONSE_STATUS = {
 export interface UserState {
   loading: boolean
   error?: string
-  employees?: IUser[]
+  employees: IUser[]
   responses: RESPONSE_STATUS
 }
 
@@ -97,7 +97,7 @@ const reducer = (state: UserState, action: UserAction): UserState => {
     case 'SET_EMPLOYEES':
       return { ...state, employees: action.employees }
     case 'RESET_EMPLOYEES':
-      return { ...state, employees: undefined }
+      return { ...state, employees: [] }
   }
 }
 

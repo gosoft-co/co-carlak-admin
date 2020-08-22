@@ -5,7 +5,12 @@ interface Delivery {
   id?: string
   date?: string
   route?: any
+  users?: { items: any[] }
   _version?: number | null
+  _deleted?: boolean
+  _lastChangedAt?: any
+  createdAt?: string
+  updatedAt?: string
 }
 
 function mapListDeliveriesQuery(
@@ -18,6 +23,7 @@ function mapListDeliveriesQuery(
           id: delivery?.id,
           date: delivery?.date,
           deliveryRouteId: delivery?.route,
+          users: delivery?.users,
           _version: delivery?._version,
         } as Delivery)
     ) || []

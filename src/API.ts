@@ -2,17 +2,18 @@
 /* eslint-disable */
 //  This file was automatically generated and should not be edited.
 
-export type CreateUserInput = {
+export type CreateDeliveryUsersInput = {
   id?: string | null,
-  username: string,
+  user: string,
   _version?: number | null,
+  deliveryUsersDeliveryId?: string | null,
 };
 
-export type ModelUserConditionInput = {
-  username?: ModelStringInput | null,
-  and?: Array< ModelUserConditionInput | null > | null,
-  or?: Array< ModelUserConditionInput | null > | null,
-  not?: ModelUserConditionInput | null,
+export type ModelDeliveryUsersConditionInput = {
+  user?: ModelStringInput | null,
+  and?: Array< ModelDeliveryUsersConditionInput | null > | null,
+  or?: Array< ModelDeliveryUsersConditionInput | null > | null,
+  not?: ModelDeliveryUsersConditionInput | null,
 };
 
 export type ModelStringInput = {
@@ -55,34 +56,10 @@ export type ModelSizeInput = {
   between?: Array< number | null > | null,
 };
 
-export type UpdateUserInput = {
-  id: string,
-  username?: string | null,
-  _version?: number | null,
-};
-
-export type DeleteUserInput = {
-  id?: string | null,
-  _version?: number | null,
-};
-
-export type CreateDeliveryUsersInput = {
-  id?: string | null,
-  _version?: number | null,
-  deliveryUsersUserId?: string | null,
-  deliveryUsersDeliveryId?: string | null,
-};
-
-export type ModelDeliveryUsersConditionInput = {
-  and?: Array< ModelDeliveryUsersConditionInput | null > | null,
-  or?: Array< ModelDeliveryUsersConditionInput | null > | null,
-  not?: ModelDeliveryUsersConditionInput | null,
-};
-
 export type UpdateDeliveryUsersInput = {
   id: string,
+  user?: string | null,
   _version?: number | null,
-  deliveryUsersUserId?: string | null,
   deliveryUsersDeliveryId?: string | null,
 };
 
@@ -93,7 +70,7 @@ export type DeleteDeliveryUsersInput = {
 
 export type CreateDeliveryInput = {
   id?: string | null,
-  date?: string | null,
+  date: string,
   _version?: number | null,
   deliveryRouteId?: string | null,
 };
@@ -196,12 +173,97 @@ export type DeleteAccountInput = {
   _version?: number | null,
 };
 
-export type ModelUserFilterInput = {
+export type CreateDeliveryProductsInput = {
+  id?: string | null,
+  quantity: number,
+  price?: number | null,
+  _version?: number | null,
+  deliveryProductsProductId?: string | null,
+  deliveryProductsDeliveryId?: string | null,
+};
+
+export type ModelDeliveryProductsConditionInput = {
+  quantity?: ModelIntInput | null,
+  price?: ModelFloatInput | null,
+  and?: Array< ModelDeliveryProductsConditionInput | null > | null,
+  or?: Array< ModelDeliveryProductsConditionInput | null > | null,
+  not?: ModelDeliveryProductsConditionInput | null,
+};
+
+export type ModelIntInput = {
+  ne?: number | null,
+  eq?: number | null,
+  le?: number | null,
+  lt?: number | null,
+  ge?: number | null,
+  gt?: number | null,
+  between?: Array< number | null > | null,
+  attributeExists?: boolean | null,
+  attributeType?: ModelAttributeTypes | null,
+};
+
+export type ModelFloatInput = {
+  ne?: number | null,
+  eq?: number | null,
+  le?: number | null,
+  lt?: number | null,
+  ge?: number | null,
+  gt?: number | null,
+  between?: Array< number | null > | null,
+  attributeExists?: boolean | null,
+  attributeType?: ModelAttributeTypes | null,
+};
+
+export type UpdateDeliveryProductsInput = {
+  id: string,
+  quantity?: number | null,
+  price?: number | null,
+  _version?: number | null,
+  deliveryProductsProductId?: string | null,
+  deliveryProductsDeliveryId?: string | null,
+};
+
+export type DeleteDeliveryProductsInput = {
+  id?: string | null,
+  _version?: number | null,
+};
+
+export type CreateProductInput = {
+  id?: string | null,
+  name: string,
+  description?: string | null,
+  price?: number | null,
+  _version?: number | null,
+};
+
+export type ModelProductConditionInput = {
+  name?: ModelStringInput | null,
+  description?: ModelStringInput | null,
+  price?: ModelFloatInput | null,
+  and?: Array< ModelProductConditionInput | null > | null,
+  or?: Array< ModelProductConditionInput | null > | null,
+  not?: ModelProductConditionInput | null,
+};
+
+export type UpdateProductInput = {
+  id: string,
+  name?: string | null,
+  description?: string | null,
+  price?: number | null,
+  _version?: number | null,
+};
+
+export type DeleteProductInput = {
+  id?: string | null,
+  _version?: number | null,
+};
+
+export type ModelDeliveryUsersFilterInput = {
   id?: ModelIDInput | null,
-  username?: ModelStringInput | null,
-  and?: Array< ModelUserFilterInput | null > | null,
-  or?: Array< ModelUserFilterInput | null > | null,
-  not?: ModelUserFilterInput | null,
+  user?: ModelStringInput | null,
+  and?: Array< ModelDeliveryUsersFilterInput | null > | null,
+  or?: Array< ModelDeliveryUsersFilterInput | null > | null,
+  not?: ModelDeliveryUsersFilterInput | null,
 };
 
 export type ModelIDInput = {
@@ -218,13 +280,6 @@ export type ModelIDInput = {
   attributeExists?: boolean | null,
   attributeType?: ModelAttributeTypes | null,
   size?: ModelSizeInput | null,
-};
-
-export type ModelDeliveryUsersFilterInput = {
-  id?: ModelIDInput | null,
-  and?: Array< ModelDeliveryUsersFilterInput | null > | null,
-  or?: Array< ModelDeliveryUsersFilterInput | null > | null,
-  not?: ModelDeliveryUsersFilterInput | null,
 };
 
 export type ModelDeliveryFilterInput = {
@@ -260,100 +315,23 @@ export type ModelAccountFilterInput = {
   not?: ModelAccountFilterInput | null,
 };
 
-export type CreateUserMutationVariables = {
-  input: CreateUserInput,
-  condition?: ModelUserConditionInput | null,
+export type ModelDeliveryProductsFilterInput = {
+  id?: ModelIDInput | null,
+  quantity?: ModelIntInput | null,
+  price?: ModelFloatInput | null,
+  and?: Array< ModelDeliveryProductsFilterInput | null > | null,
+  or?: Array< ModelDeliveryProductsFilterInput | null > | null,
+  not?: ModelDeliveryProductsFilterInput | null,
 };
 
-export type CreateUserMutation = {
-  createUser:  {
-    __typename: "User",
-    id: string | null,
-    username: string,
-    deliveries:  {
-      __typename: "ModelDeliveryUsersConnection",
-      items:  Array< {
-        __typename: "DeliveryUsers",
-        id: string,
-        _version: number,
-        _deleted: boolean | null,
-        _lastChangedAt: number,
-        createdAt: string,
-        updatedAt: string,
-      } | null > | null,
-      nextToken: string | null,
-      startedAt: number | null,
-    } | null,
-    _version: number,
-    _deleted: boolean | null,
-    _lastChangedAt: number,
-    createdAt: string,
-    updatedAt: string,
-  } | null,
-};
-
-export type UpdateUserMutationVariables = {
-  input: UpdateUserInput,
-  condition?: ModelUserConditionInput | null,
-};
-
-export type UpdateUserMutation = {
-  updateUser:  {
-    __typename: "User",
-    id: string | null,
-    username: string,
-    deliveries:  {
-      __typename: "ModelDeliveryUsersConnection",
-      items:  Array< {
-        __typename: "DeliveryUsers",
-        id: string,
-        _version: number,
-        _deleted: boolean | null,
-        _lastChangedAt: number,
-        createdAt: string,
-        updatedAt: string,
-      } | null > | null,
-      nextToken: string | null,
-      startedAt: number | null,
-    } | null,
-    _version: number,
-    _deleted: boolean | null,
-    _lastChangedAt: number,
-    createdAt: string,
-    updatedAt: string,
-  } | null,
-};
-
-export type DeleteUserMutationVariables = {
-  input: DeleteUserInput,
-  condition?: ModelUserConditionInput | null,
-};
-
-export type DeleteUserMutation = {
-  deleteUser:  {
-    __typename: "User",
-    id: string | null,
-    username: string,
-    deliveries:  {
-      __typename: "ModelDeliveryUsersConnection",
-      items:  Array< {
-        __typename: "DeliveryUsers",
-        id: string,
-        _version: number,
-        _deleted: boolean | null,
-        _lastChangedAt: number,
-        createdAt: string,
-        updatedAt: string,
-      } | null > | null,
-      nextToken: string | null,
-      startedAt: number | null,
-    } | null,
-    _version: number,
-    _deleted: boolean | null,
-    _lastChangedAt: number,
-    createdAt: string,
-    updatedAt: string,
-  } | null,
+export type ModelProductFilterInput = {
+  id?: ModelIDInput | null,
+  name?: ModelStringInput | null,
+  description?: ModelStringInput | null,
+  price?: ModelFloatInput | null,
+  and?: Array< ModelProductFilterInput | null > | null,
+  or?: Array< ModelProductFilterInput | null > | null,
+  not?: ModelProductFilterInput | null,
 };
 
 export type CreateDeliveryUsersMutationVariables = {
@@ -365,25 +343,11 @@ export type CreateDeliveryUsersMutation = {
   createDeliveryUsers:  {
     __typename: "DeliveryUsers",
     id: string,
-    user:  {
-      __typename: "User",
-      id: string | null,
-      username: string,
-      deliveries:  {
-        __typename: "ModelDeliveryUsersConnection",
-        nextToken: string | null,
-        startedAt: number | null,
-      } | null,
-      _version: number,
-      _deleted: boolean | null,
-      _lastChangedAt: number,
-      createdAt: string,
-      updatedAt: string,
-    } | null,
+    user: string,
     delivery:  {
       __typename: "Delivery",
       id: string,
-      date: string | null,
+      date: string,
       route:  {
         __typename: "Route",
         id: string,
@@ -397,6 +361,11 @@ export type CreateDeliveryUsersMutation = {
       } | null,
       users:  {
         __typename: "ModelDeliveryUsersConnection",
+        nextToken: string | null,
+        startedAt: number | null,
+      } | null,
+      products:  {
+        __typename: "ModelDeliveryProductsConnection",
         nextToken: string | null,
         startedAt: number | null,
       } | null,
@@ -423,25 +392,11 @@ export type UpdateDeliveryUsersMutation = {
   updateDeliveryUsers:  {
     __typename: "DeliveryUsers",
     id: string,
-    user:  {
-      __typename: "User",
-      id: string | null,
-      username: string,
-      deliveries:  {
-        __typename: "ModelDeliveryUsersConnection",
-        nextToken: string | null,
-        startedAt: number | null,
-      } | null,
-      _version: number,
-      _deleted: boolean | null,
-      _lastChangedAt: number,
-      createdAt: string,
-      updatedAt: string,
-    } | null,
+    user: string,
     delivery:  {
       __typename: "Delivery",
       id: string,
-      date: string | null,
+      date: string,
       route:  {
         __typename: "Route",
         id: string,
@@ -455,6 +410,11 @@ export type UpdateDeliveryUsersMutation = {
       } | null,
       users:  {
         __typename: "ModelDeliveryUsersConnection",
+        nextToken: string | null,
+        startedAt: number | null,
+      } | null,
+      products:  {
+        __typename: "ModelDeliveryProductsConnection",
         nextToken: string | null,
         startedAt: number | null,
       } | null,
@@ -481,25 +441,11 @@ export type DeleteDeliveryUsersMutation = {
   deleteDeliveryUsers:  {
     __typename: "DeliveryUsers",
     id: string,
-    user:  {
-      __typename: "User",
-      id: string | null,
-      username: string,
-      deliveries:  {
-        __typename: "ModelDeliveryUsersConnection",
-        nextToken: string | null,
-        startedAt: number | null,
-      } | null,
-      _version: number,
-      _deleted: boolean | null,
-      _lastChangedAt: number,
-      createdAt: string,
-      updatedAt: string,
-    } | null,
+    user: string,
     delivery:  {
       __typename: "Delivery",
       id: string,
-      date: string | null,
+      date: string,
       route:  {
         __typename: "Route",
         id: string,
@@ -513,6 +459,11 @@ export type DeleteDeliveryUsersMutation = {
       } | null,
       users:  {
         __typename: "ModelDeliveryUsersConnection",
+        nextToken: string | null,
+        startedAt: number | null,
+      } | null,
+      products:  {
+        __typename: "ModelDeliveryProductsConnection",
         nextToken: string | null,
         startedAt: number | null,
       } | null,
@@ -539,7 +490,7 @@ export type CreateDeliveryMutation = {
   createDelivery:  {
     __typename: "Delivery",
     id: string,
-    date: string | null,
+    date: string,
     route:  {
       __typename: "Route",
       id: string,
@@ -566,6 +517,23 @@ export type CreateDeliveryMutation = {
       items:  Array< {
         __typename: "DeliveryUsers",
         id: string,
+        user: string,
+        _version: number,
+        _deleted: boolean | null,
+        _lastChangedAt: number,
+        createdAt: string,
+        updatedAt: string,
+      } | null > | null,
+      nextToken: string | null,
+      startedAt: number | null,
+    } | null,
+    products:  {
+      __typename: "ModelDeliveryProductsConnection",
+      items:  Array< {
+        __typename: "DeliveryProducts",
+        id: string,
+        quantity: number,
+        price: number | null,
         _version: number,
         _deleted: boolean | null,
         _lastChangedAt: number,
@@ -592,7 +560,7 @@ export type UpdateDeliveryMutation = {
   updateDelivery:  {
     __typename: "Delivery",
     id: string,
-    date: string | null,
+    date: string,
     route:  {
       __typename: "Route",
       id: string,
@@ -619,6 +587,23 @@ export type UpdateDeliveryMutation = {
       items:  Array< {
         __typename: "DeliveryUsers",
         id: string,
+        user: string,
+        _version: number,
+        _deleted: boolean | null,
+        _lastChangedAt: number,
+        createdAt: string,
+        updatedAt: string,
+      } | null > | null,
+      nextToken: string | null,
+      startedAt: number | null,
+    } | null,
+    products:  {
+      __typename: "ModelDeliveryProductsConnection",
+      items:  Array< {
+        __typename: "DeliveryProducts",
+        id: string,
+        quantity: number,
+        price: number | null,
         _version: number,
         _deleted: boolean | null,
         _lastChangedAt: number,
@@ -645,7 +630,7 @@ export type DeleteDeliveryMutation = {
   deleteDelivery:  {
     __typename: "Delivery",
     id: string,
-    date: string | null,
+    date: string,
     route:  {
       __typename: "Route",
       id: string,
@@ -672,6 +657,23 @@ export type DeleteDeliveryMutation = {
       items:  Array< {
         __typename: "DeliveryUsers",
         id: string,
+        user: string,
+        _version: number,
+        _deleted: boolean | null,
+        _lastChangedAt: number,
+        createdAt: string,
+        updatedAt: string,
+      } | null > | null,
+      nextToken: string | null,
+      startedAt: number | null,
+    } | null,
+    products:  {
+      __typename: "ModelDeliveryProductsConnection",
+      items:  Array< {
+        __typename: "DeliveryProducts",
+        id: string,
+        quantity: number,
+        price: number | null,
         _version: number,
         _deleted: boolean | null,
         _lastChangedAt: number,
@@ -705,7 +707,7 @@ export type CreateRouteMutation = {
       items:  Array< {
         __typename: "Delivery",
         id: string,
-        date: string | null,
+        date: string,
         _version: number,
         _deleted: boolean | null,
         _lastChangedAt: number,
@@ -753,7 +755,7 @@ export type UpdateRouteMutation = {
       items:  Array< {
         __typename: "Delivery",
         id: string,
-        date: string | null,
+        date: string,
         _version: number,
         _deleted: boolean | null,
         _lastChangedAt: number,
@@ -801,7 +803,7 @@ export type DeleteRouteMutation = {
       items:  Array< {
         __typename: "Delivery",
         id: string,
-        date: string | null,
+        date: string,
         _version: number,
         _deleted: boolean | null,
         _lastChangedAt: number,
@@ -1094,22 +1096,25 @@ export type DeleteAccountMutation = {
   } | null,
 };
 
-export type SyncUsersQueryVariables = {
-  filter?: ModelUserFilterInput | null,
-  limit?: number | null,
-  nextToken?: string | null,
-  lastSync?: number | null,
+export type CreateDeliveryProductsMutationVariables = {
+  input: CreateDeliveryProductsInput,
+  condition?: ModelDeliveryProductsConditionInput | null,
 };
 
-export type SyncUsersQuery = {
-  syncUsers:  {
-    __typename: "ModelUserConnection",
-    items:  Array< {
-      __typename: "User",
-      id: string | null,
-      username: string,
+export type CreateDeliveryProductsMutation = {
+  createDeliveryProducts:  {
+    __typename: "DeliveryProducts",
+    id: string,
+    quantity: number,
+    price: number | null,
+    product:  {
+      __typename: "Product",
+      id: string,
+      name: string,
+      description: string | null,
+      price: number | null,
       deliveries:  {
-        __typename: "ModelDeliveryUsersConnection",
+        __typename: "ModelDeliveryProductsConnection",
         nextToken: string | null,
         startedAt: number | null,
       } | null,
@@ -1118,26 +1123,199 @@ export type SyncUsersQuery = {
       _lastChangedAt: number,
       createdAt: string,
       updatedAt: string,
-    } | null > | null,
-    nextToken: string | null,
-    startedAt: number | null,
+    } | null,
+    delivery:  {
+      __typename: "Delivery",
+      id: string,
+      date: string,
+      route:  {
+        __typename: "Route",
+        id: string,
+        name: string,
+        status: string | null,
+        _version: number,
+        _deleted: boolean | null,
+        _lastChangedAt: number,
+        createdAt: string,
+        updatedAt: string,
+      } | null,
+      users:  {
+        __typename: "ModelDeliveryUsersConnection",
+        nextToken: string | null,
+        startedAt: number | null,
+      } | null,
+      products:  {
+        __typename: "ModelDeliveryProductsConnection",
+        nextToken: string | null,
+        startedAt: number | null,
+      } | null,
+      _version: number,
+      _deleted: boolean | null,
+      _lastChangedAt: number,
+      createdAt: string,
+      updatedAt: string,
+    } | null,
+    _version: number,
+    _deleted: boolean | null,
+    _lastChangedAt: number,
+    createdAt: string,
+    updatedAt: string,
   } | null,
 };
 
-export type GetUserQueryVariables = {
-  id: string,
+export type UpdateDeliveryProductsMutationVariables = {
+  input: UpdateDeliveryProductsInput,
+  condition?: ModelDeliveryProductsConditionInput | null,
 };
 
-export type GetUserQuery = {
-  getUser:  {
-    __typename: "User",
-    id: string | null,
-    username: string,
-    deliveries:  {
-      __typename: "ModelDeliveryUsersConnection",
-      items:  Array< {
-        __typename: "DeliveryUsers",
+export type UpdateDeliveryProductsMutation = {
+  updateDeliveryProducts:  {
+    __typename: "DeliveryProducts",
+    id: string,
+    quantity: number,
+    price: number | null,
+    product:  {
+      __typename: "Product",
+      id: string,
+      name: string,
+      description: string | null,
+      price: number | null,
+      deliveries:  {
+        __typename: "ModelDeliveryProductsConnection",
+        nextToken: string | null,
+        startedAt: number | null,
+      } | null,
+      _version: number,
+      _deleted: boolean | null,
+      _lastChangedAt: number,
+      createdAt: string,
+      updatedAt: string,
+    } | null,
+    delivery:  {
+      __typename: "Delivery",
+      id: string,
+      date: string,
+      route:  {
+        __typename: "Route",
         id: string,
+        name: string,
+        status: string | null,
+        _version: number,
+        _deleted: boolean | null,
+        _lastChangedAt: number,
+        createdAt: string,
+        updatedAt: string,
+      } | null,
+      users:  {
+        __typename: "ModelDeliveryUsersConnection",
+        nextToken: string | null,
+        startedAt: number | null,
+      } | null,
+      products:  {
+        __typename: "ModelDeliveryProductsConnection",
+        nextToken: string | null,
+        startedAt: number | null,
+      } | null,
+      _version: number,
+      _deleted: boolean | null,
+      _lastChangedAt: number,
+      createdAt: string,
+      updatedAt: string,
+    } | null,
+    _version: number,
+    _deleted: boolean | null,
+    _lastChangedAt: number,
+    createdAt: string,
+    updatedAt: string,
+  } | null,
+};
+
+export type DeleteDeliveryProductsMutationVariables = {
+  input: DeleteDeliveryProductsInput,
+  condition?: ModelDeliveryProductsConditionInput | null,
+};
+
+export type DeleteDeliveryProductsMutation = {
+  deleteDeliveryProducts:  {
+    __typename: "DeliveryProducts",
+    id: string,
+    quantity: number,
+    price: number | null,
+    product:  {
+      __typename: "Product",
+      id: string,
+      name: string,
+      description: string | null,
+      price: number | null,
+      deliveries:  {
+        __typename: "ModelDeliveryProductsConnection",
+        nextToken: string | null,
+        startedAt: number | null,
+      } | null,
+      _version: number,
+      _deleted: boolean | null,
+      _lastChangedAt: number,
+      createdAt: string,
+      updatedAt: string,
+    } | null,
+    delivery:  {
+      __typename: "Delivery",
+      id: string,
+      date: string,
+      route:  {
+        __typename: "Route",
+        id: string,
+        name: string,
+        status: string | null,
+        _version: number,
+        _deleted: boolean | null,
+        _lastChangedAt: number,
+        createdAt: string,
+        updatedAt: string,
+      } | null,
+      users:  {
+        __typename: "ModelDeliveryUsersConnection",
+        nextToken: string | null,
+        startedAt: number | null,
+      } | null,
+      products:  {
+        __typename: "ModelDeliveryProductsConnection",
+        nextToken: string | null,
+        startedAt: number | null,
+      } | null,
+      _version: number,
+      _deleted: boolean | null,
+      _lastChangedAt: number,
+      createdAt: string,
+      updatedAt: string,
+    } | null,
+    _version: number,
+    _deleted: boolean | null,
+    _lastChangedAt: number,
+    createdAt: string,
+    updatedAt: string,
+  } | null,
+};
+
+export type CreateProductMutationVariables = {
+  input: CreateProductInput,
+  condition?: ModelProductConditionInput | null,
+};
+
+export type CreateProductMutation = {
+  createProduct:  {
+    __typename: "Product",
+    id: string,
+    name: string,
+    description: string | null,
+    price: number | null,
+    deliveries:  {
+      __typename: "ModelDeliveryProductsConnection",
+      items:  Array< {
+        __typename: "DeliveryProducts",
+        id: string,
+        quantity: number,
+        price: number | null,
         _version: number,
         _deleted: boolean | null,
         _lastChangedAt: number,
@@ -1155,32 +1333,75 @@ export type GetUserQuery = {
   } | null,
 };
 
-export type ListUsersQueryVariables = {
-  filter?: ModelUserFilterInput | null,
-  limit?: number | null,
-  nextToken?: string | null,
+export type UpdateProductMutationVariables = {
+  input: UpdateProductInput,
+  condition?: ModelProductConditionInput | null,
 };
 
-export type ListUsersQuery = {
-  listUsers:  {
-    __typename: "ModelUserConnection",
-    items:  Array< {
-      __typename: "User",
-      id: string | null,
-      username: string,
-      deliveries:  {
-        __typename: "ModelDeliveryUsersConnection",
-        nextToken: string | null,
-        startedAt: number | null,
-      } | null,
-      _version: number,
-      _deleted: boolean | null,
-      _lastChangedAt: number,
-      createdAt: string,
-      updatedAt: string,
-    } | null > | null,
-    nextToken: string | null,
-    startedAt: number | null,
+export type UpdateProductMutation = {
+  updateProduct:  {
+    __typename: "Product",
+    id: string,
+    name: string,
+    description: string | null,
+    price: number | null,
+    deliveries:  {
+      __typename: "ModelDeliveryProductsConnection",
+      items:  Array< {
+        __typename: "DeliveryProducts",
+        id: string,
+        quantity: number,
+        price: number | null,
+        _version: number,
+        _deleted: boolean | null,
+        _lastChangedAt: number,
+        createdAt: string,
+        updatedAt: string,
+      } | null > | null,
+      nextToken: string | null,
+      startedAt: number | null,
+    } | null,
+    _version: number,
+    _deleted: boolean | null,
+    _lastChangedAt: number,
+    createdAt: string,
+    updatedAt: string,
+  } | null,
+};
+
+export type DeleteProductMutationVariables = {
+  input: DeleteProductInput,
+  condition?: ModelProductConditionInput | null,
+};
+
+export type DeleteProductMutation = {
+  deleteProduct:  {
+    __typename: "Product",
+    id: string,
+    name: string,
+    description: string | null,
+    price: number | null,
+    deliveries:  {
+      __typename: "ModelDeliveryProductsConnection",
+      items:  Array< {
+        __typename: "DeliveryProducts",
+        id: string,
+        quantity: number,
+        price: number | null,
+        _version: number,
+        _deleted: boolean | null,
+        _lastChangedAt: number,
+        createdAt: string,
+        updatedAt: string,
+      } | null > | null,
+      nextToken: string | null,
+      startedAt: number | null,
+    } | null,
+    _version: number,
+    _deleted: boolean | null,
+    _lastChangedAt: number,
+    createdAt: string,
+    updatedAt: string,
   } | null,
 };
 
@@ -1197,20 +1418,11 @@ export type SyncDeliveryUsersQuery = {
     items:  Array< {
       __typename: "DeliveryUsers",
       id: string,
-      user:  {
-        __typename: "User",
-        id: string | null,
-        username: string,
-        _version: number,
-        _deleted: boolean | null,
-        _lastChangedAt: number,
-        createdAt: string,
-        updatedAt: string,
-      } | null,
+      user: string,
       delivery:  {
         __typename: "Delivery",
         id: string,
-        date: string | null,
+        date: string,
         _version: number,
         _deleted: boolean | null,
         _lastChangedAt: number,
@@ -1241,7 +1453,7 @@ export type SyncDeliveriesQuery = {
     items:  Array< {
       __typename: "Delivery",
       id: string,
-      date: string | null,
+      date: string,
       route:  {
         __typename: "Route",
         id: string,
@@ -1255,6 +1467,11 @@ export type SyncDeliveriesQuery = {
       } | null,
       users:  {
         __typename: "ModelDeliveryUsersConnection",
+        nextToken: string | null,
+        startedAt: number | null,
+      } | null,
+      products:  {
+        __typename: "ModelDeliveryProductsConnection",
         nextToken: string | null,
         startedAt: number | null,
       } | null,
@@ -1277,7 +1494,7 @@ export type GetDeliveryQuery = {
   getDelivery:  {
     __typename: "Delivery",
     id: string,
-    date: string | null,
+    date: string,
     route:  {
       __typename: "Route",
       id: string,
@@ -1304,6 +1521,23 @@ export type GetDeliveryQuery = {
       items:  Array< {
         __typename: "DeliveryUsers",
         id: string,
+        user: string,
+        _version: number,
+        _deleted: boolean | null,
+        _lastChangedAt: number,
+        createdAt: string,
+        updatedAt: string,
+      } | null > | null,
+      nextToken: string | null,
+      startedAt: number | null,
+    } | null,
+    products:  {
+      __typename: "ModelDeliveryProductsConnection",
+      items:  Array< {
+        __typename: "DeliveryProducts",
+        id: string,
+        quantity: number,
+        price: number | null,
         _version: number,
         _deleted: boolean | null,
         _lastChangedAt: number,
@@ -1333,7 +1567,7 @@ export type ListDeliverysQuery = {
     items:  Array< {
       __typename: "Delivery",
       id: string,
-      date: string | null,
+      date: string,
       route:  {
         __typename: "Route",
         id: string,
@@ -1347,6 +1581,11 @@ export type ListDeliverysQuery = {
       } | null,
       users:  {
         __typename: "ModelDeliveryUsersConnection",
+        nextToken: string | null,
+        startedAt: number | null,
+      } | null,
+      products:  {
+        __typename: "ModelDeliveryProductsConnection",
         nextToken: string | null,
         startedAt: number | null,
       } | null,
@@ -1412,7 +1651,7 @@ export type GetRouteQuery = {
       items:  Array< {
         __typename: "Delivery",
         id: string,
-        date: string | null,
+        date: string,
         _version: number,
         _deleted: boolean | null,
         _lastChangedAt: number,
@@ -1618,97 +1857,72 @@ export type ListAccountsQuery = {
   } | null,
 };
 
-export type OnCreateUserSubscription = {
-  onCreateUser:  {
-    __typename: "User",
-    id: string | null,
-    username: string,
-    deliveries:  {
-      __typename: "ModelDeliveryUsersConnection",
-      items:  Array< {
-        __typename: "DeliveryUsers",
+export type SyncDeliveryProductsQueryVariables = {
+  filter?: ModelDeliveryProductsFilterInput | null,
+  limit?: number | null,
+  nextToken?: string | null,
+  lastSync?: number | null,
+};
+
+export type SyncDeliveryProductsQuery = {
+  syncDeliveryProducts:  {
+    __typename: "ModelDeliveryProductsConnection",
+    items:  Array< {
+      __typename: "DeliveryProducts",
+      id: string,
+      quantity: number,
+      price: number | null,
+      product:  {
+        __typename: "Product",
         id: string,
+        name: string,
+        description: string | null,
+        price: number | null,
         _version: number,
         _deleted: boolean | null,
         _lastChangedAt: number,
         createdAt: string,
         updatedAt: string,
-      } | null > | null,
-      nextToken: string | null,
-      startedAt: number | null,
-    } | null,
-    _version: number,
-    _deleted: boolean | null,
-    _lastChangedAt: number,
-    createdAt: string,
-    updatedAt: string,
-  } | null,
-};
-
-export type OnUpdateUserSubscription = {
-  onUpdateUser:  {
-    __typename: "User",
-    id: string | null,
-    username: string,
-    deliveries:  {
-      __typename: "ModelDeliveryUsersConnection",
-      items:  Array< {
-        __typename: "DeliveryUsers",
+      } | null,
+      delivery:  {
+        __typename: "Delivery",
         id: string,
+        date: string,
         _version: number,
         _deleted: boolean | null,
         _lastChangedAt: number,
         createdAt: string,
         updatedAt: string,
-      } | null > | null,
-      nextToken: string | null,
-      startedAt: number | null,
-    } | null,
-    _version: number,
-    _deleted: boolean | null,
-    _lastChangedAt: number,
-    createdAt: string,
-    updatedAt: string,
+      } | null,
+      _version: number,
+      _deleted: boolean | null,
+      _lastChangedAt: number,
+      createdAt: string,
+      updatedAt: string,
+    } | null > | null,
+    nextToken: string | null,
+    startedAt: number | null,
   } | null,
 };
 
-export type OnDeleteUserSubscription = {
-  onDeleteUser:  {
-    __typename: "User",
-    id: string | null,
-    username: string,
-    deliveries:  {
-      __typename: "ModelDeliveryUsersConnection",
-      items:  Array< {
-        __typename: "DeliveryUsers",
-        id: string,
-        _version: number,
-        _deleted: boolean | null,
-        _lastChangedAt: number,
-        createdAt: string,
-        updatedAt: string,
-      } | null > | null,
-      nextToken: string | null,
-      startedAt: number | null,
-    } | null,
-    _version: number,
-    _deleted: boolean | null,
-    _lastChangedAt: number,
-    createdAt: string,
-    updatedAt: string,
-  } | null,
+export type SyncProductsQueryVariables = {
+  filter?: ModelProductFilterInput | null,
+  limit?: number | null,
+  nextToken?: string | null,
+  lastSync?: number | null,
 };
 
-export type OnCreateDeliveryUsersSubscription = {
-  onCreateDeliveryUsers:  {
-    __typename: "DeliveryUsers",
-    id: string,
-    user:  {
-      __typename: "User",
-      id: string | null,
-      username: string,
+export type SyncProductsQuery = {
+  syncProducts:  {
+    __typename: "ModelProductConnection",
+    items:  Array< {
+      __typename: "Product",
+      id: string,
+      name: string,
+      description: string | null,
+      price: number | null,
       deliveries:  {
-        __typename: "ModelDeliveryUsersConnection",
+        __typename: "ModelDeliveryProductsConnection",
         nextToken: string | null,
         startedAt: number | null,
       } | null,
@@ -1717,11 +1931,87 @@ export type OnCreateDeliveryUsersSubscription = {
       _lastChangedAt: number,
       createdAt: string,
       updatedAt: string,
+    } | null > | null,
+    nextToken: string | null,
+    startedAt: number | null,
+  } | null,
+};
+
+export type GetProductQueryVariables = {
+  id: string,
+};
+
+export type GetProductQuery = {
+  getProduct:  {
+    __typename: "Product",
+    id: string,
+    name: string,
+    description: string | null,
+    price: number | null,
+    deliveries:  {
+      __typename: "ModelDeliveryProductsConnection",
+      items:  Array< {
+        __typename: "DeliveryProducts",
+        id: string,
+        quantity: number,
+        price: number | null,
+        _version: number,
+        _deleted: boolean | null,
+        _lastChangedAt: number,
+        createdAt: string,
+        updatedAt: string,
+      } | null > | null,
+      nextToken: string | null,
+      startedAt: number | null,
     } | null,
+    _version: number,
+    _deleted: boolean | null,
+    _lastChangedAt: number,
+    createdAt: string,
+    updatedAt: string,
+  } | null,
+};
+
+export type ListProductsQueryVariables = {
+  filter?: ModelProductFilterInput | null,
+  limit?: number | null,
+  nextToken?: string | null,
+};
+
+export type ListProductsQuery = {
+  listProducts:  {
+    __typename: "ModelProductConnection",
+    items:  Array< {
+      __typename: "Product",
+      id: string,
+      name: string,
+      description: string | null,
+      price: number | null,
+      deliveries:  {
+        __typename: "ModelDeliveryProductsConnection",
+        nextToken: string | null,
+        startedAt: number | null,
+      } | null,
+      _version: number,
+      _deleted: boolean | null,
+      _lastChangedAt: number,
+      createdAt: string,
+      updatedAt: string,
+    } | null > | null,
+    nextToken: string | null,
+    startedAt: number | null,
+  } | null,
+};
+
+export type OnCreateDeliveryUsersSubscription = {
+  onCreateDeliveryUsers:  {
+    __typename: "DeliveryUsers",
+    id: string,
+    user: string,
     delivery:  {
       __typename: "Delivery",
       id: string,
-      date: string | null,
+      date: string,
       route:  {
         __typename: "Route",
         id: string,
@@ -1735,6 +2025,11 @@ export type OnCreateDeliveryUsersSubscription = {
       } | null,
       users:  {
         __typename: "ModelDeliveryUsersConnection",
+        nextToken: string | null,
+        startedAt: number | null,
+      } | null,
+      products:  {
+        __typename: "ModelDeliveryProductsConnection",
         nextToken: string | null,
         startedAt: number | null,
       } | null,
@@ -1756,25 +2051,11 @@ export type OnUpdateDeliveryUsersSubscription = {
   onUpdateDeliveryUsers:  {
     __typename: "DeliveryUsers",
     id: string,
-    user:  {
-      __typename: "User",
-      id: string | null,
-      username: string,
-      deliveries:  {
-        __typename: "ModelDeliveryUsersConnection",
-        nextToken: string | null,
-        startedAt: number | null,
-      } | null,
-      _version: number,
-      _deleted: boolean | null,
-      _lastChangedAt: number,
-      createdAt: string,
-      updatedAt: string,
-    } | null,
+    user: string,
     delivery:  {
       __typename: "Delivery",
       id: string,
-      date: string | null,
+      date: string,
       route:  {
         __typename: "Route",
         id: string,
@@ -1788,6 +2069,11 @@ export type OnUpdateDeliveryUsersSubscription = {
       } | null,
       users:  {
         __typename: "ModelDeliveryUsersConnection",
+        nextToken: string | null,
+        startedAt: number | null,
+      } | null,
+      products:  {
+        __typename: "ModelDeliveryProductsConnection",
         nextToken: string | null,
         startedAt: number | null,
       } | null,
@@ -1809,25 +2095,11 @@ export type OnDeleteDeliveryUsersSubscription = {
   onDeleteDeliveryUsers:  {
     __typename: "DeliveryUsers",
     id: string,
-    user:  {
-      __typename: "User",
-      id: string | null,
-      username: string,
-      deliveries:  {
-        __typename: "ModelDeliveryUsersConnection",
-        nextToken: string | null,
-        startedAt: number | null,
-      } | null,
-      _version: number,
-      _deleted: boolean | null,
-      _lastChangedAt: number,
-      createdAt: string,
-      updatedAt: string,
-    } | null,
+    user: string,
     delivery:  {
       __typename: "Delivery",
       id: string,
-      date: string | null,
+      date: string,
       route:  {
         __typename: "Route",
         id: string,
@@ -1841,6 +2113,11 @@ export type OnDeleteDeliveryUsersSubscription = {
       } | null,
       users:  {
         __typename: "ModelDeliveryUsersConnection",
+        nextToken: string | null,
+        startedAt: number | null,
+      } | null,
+      products:  {
+        __typename: "ModelDeliveryProductsConnection",
         nextToken: string | null,
         startedAt: number | null,
       } | null,
@@ -1862,7 +2139,7 @@ export type OnCreateDeliverySubscription = {
   onCreateDelivery:  {
     __typename: "Delivery",
     id: string,
-    date: string | null,
+    date: string,
     route:  {
       __typename: "Route",
       id: string,
@@ -1889,6 +2166,23 @@ export type OnCreateDeliverySubscription = {
       items:  Array< {
         __typename: "DeliveryUsers",
         id: string,
+        user: string,
+        _version: number,
+        _deleted: boolean | null,
+        _lastChangedAt: number,
+        createdAt: string,
+        updatedAt: string,
+      } | null > | null,
+      nextToken: string | null,
+      startedAt: number | null,
+    } | null,
+    products:  {
+      __typename: "ModelDeliveryProductsConnection",
+      items:  Array< {
+        __typename: "DeliveryProducts",
+        id: string,
+        quantity: number,
+        price: number | null,
         _version: number,
         _deleted: boolean | null,
         _lastChangedAt: number,
@@ -1910,7 +2204,7 @@ export type OnUpdateDeliverySubscription = {
   onUpdateDelivery:  {
     __typename: "Delivery",
     id: string,
-    date: string | null,
+    date: string,
     route:  {
       __typename: "Route",
       id: string,
@@ -1937,6 +2231,23 @@ export type OnUpdateDeliverySubscription = {
       items:  Array< {
         __typename: "DeliveryUsers",
         id: string,
+        user: string,
+        _version: number,
+        _deleted: boolean | null,
+        _lastChangedAt: number,
+        createdAt: string,
+        updatedAt: string,
+      } | null > | null,
+      nextToken: string | null,
+      startedAt: number | null,
+    } | null,
+    products:  {
+      __typename: "ModelDeliveryProductsConnection",
+      items:  Array< {
+        __typename: "DeliveryProducts",
+        id: string,
+        quantity: number,
+        price: number | null,
         _version: number,
         _deleted: boolean | null,
         _lastChangedAt: number,
@@ -1958,7 +2269,7 @@ export type OnDeleteDeliverySubscription = {
   onDeleteDelivery:  {
     __typename: "Delivery",
     id: string,
-    date: string | null,
+    date: string,
     route:  {
       __typename: "Route",
       id: string,
@@ -1985,6 +2296,23 @@ export type OnDeleteDeliverySubscription = {
       items:  Array< {
         __typename: "DeliveryUsers",
         id: string,
+        user: string,
+        _version: number,
+        _deleted: boolean | null,
+        _lastChangedAt: number,
+        createdAt: string,
+        updatedAt: string,
+      } | null > | null,
+      nextToken: string | null,
+      startedAt: number | null,
+    } | null,
+    products:  {
+      __typename: "ModelDeliveryProductsConnection",
+      items:  Array< {
+        __typename: "DeliveryProducts",
+        id: string,
+        quantity: number,
+        price: number | null,
         _version: number,
         _deleted: boolean | null,
         _lastChangedAt: number,
@@ -2013,7 +2341,7 @@ export type OnCreateRouteSubscription = {
       items:  Array< {
         __typename: "Delivery",
         id: string,
-        date: string | null,
+        date: string,
         _version: number,
         _deleted: boolean | null,
         _lastChangedAt: number,
@@ -2056,7 +2384,7 @@ export type OnUpdateRouteSubscription = {
       items:  Array< {
         __typename: "Delivery",
         id: string,
-        date: string | null,
+        date: string,
         _version: number,
         _deleted: boolean | null,
         _lastChangedAt: number,
@@ -2099,7 +2427,7 @@ export type OnDeleteRouteSubscription = {
       items:  Array< {
         __typename: "Delivery",
         id: string,
-        date: string | null,
+        date: string,
         _version: number,
         _deleted: boolean | null,
         _lastChangedAt: number,
@@ -2345,6 +2673,285 @@ export type OnDeleteAccountSubscription = {
       items:  Array< {
         __typename: "RouteAccounts",
         id: string,
+        _version: number,
+        _deleted: boolean | null,
+        _lastChangedAt: number,
+        createdAt: string,
+        updatedAt: string,
+      } | null > | null,
+      nextToken: string | null,
+      startedAt: number | null,
+    } | null,
+    _version: number,
+    _deleted: boolean | null,
+    _lastChangedAt: number,
+    createdAt: string,
+    updatedAt: string,
+  } | null,
+};
+
+export type OnCreateDeliveryProductsSubscription = {
+  onCreateDeliveryProducts:  {
+    __typename: "DeliveryProducts",
+    id: string,
+    quantity: number,
+    price: number | null,
+    product:  {
+      __typename: "Product",
+      id: string,
+      name: string,
+      description: string | null,
+      price: number | null,
+      deliveries:  {
+        __typename: "ModelDeliveryProductsConnection",
+        nextToken: string | null,
+        startedAt: number | null,
+      } | null,
+      _version: number,
+      _deleted: boolean | null,
+      _lastChangedAt: number,
+      createdAt: string,
+      updatedAt: string,
+    } | null,
+    delivery:  {
+      __typename: "Delivery",
+      id: string,
+      date: string,
+      route:  {
+        __typename: "Route",
+        id: string,
+        name: string,
+        status: string | null,
+        _version: number,
+        _deleted: boolean | null,
+        _lastChangedAt: number,
+        createdAt: string,
+        updatedAt: string,
+      } | null,
+      users:  {
+        __typename: "ModelDeliveryUsersConnection",
+        nextToken: string | null,
+        startedAt: number | null,
+      } | null,
+      products:  {
+        __typename: "ModelDeliveryProductsConnection",
+        nextToken: string | null,
+        startedAt: number | null,
+      } | null,
+      _version: number,
+      _deleted: boolean | null,
+      _lastChangedAt: number,
+      createdAt: string,
+      updatedAt: string,
+    } | null,
+    _version: number,
+    _deleted: boolean | null,
+    _lastChangedAt: number,
+    createdAt: string,
+    updatedAt: string,
+  } | null,
+};
+
+export type OnUpdateDeliveryProductsSubscription = {
+  onUpdateDeliveryProducts:  {
+    __typename: "DeliveryProducts",
+    id: string,
+    quantity: number,
+    price: number | null,
+    product:  {
+      __typename: "Product",
+      id: string,
+      name: string,
+      description: string | null,
+      price: number | null,
+      deliveries:  {
+        __typename: "ModelDeliveryProductsConnection",
+        nextToken: string | null,
+        startedAt: number | null,
+      } | null,
+      _version: number,
+      _deleted: boolean | null,
+      _lastChangedAt: number,
+      createdAt: string,
+      updatedAt: string,
+    } | null,
+    delivery:  {
+      __typename: "Delivery",
+      id: string,
+      date: string,
+      route:  {
+        __typename: "Route",
+        id: string,
+        name: string,
+        status: string | null,
+        _version: number,
+        _deleted: boolean | null,
+        _lastChangedAt: number,
+        createdAt: string,
+        updatedAt: string,
+      } | null,
+      users:  {
+        __typename: "ModelDeliveryUsersConnection",
+        nextToken: string | null,
+        startedAt: number | null,
+      } | null,
+      products:  {
+        __typename: "ModelDeliveryProductsConnection",
+        nextToken: string | null,
+        startedAt: number | null,
+      } | null,
+      _version: number,
+      _deleted: boolean | null,
+      _lastChangedAt: number,
+      createdAt: string,
+      updatedAt: string,
+    } | null,
+    _version: number,
+    _deleted: boolean | null,
+    _lastChangedAt: number,
+    createdAt: string,
+    updatedAt: string,
+  } | null,
+};
+
+export type OnDeleteDeliveryProductsSubscription = {
+  onDeleteDeliveryProducts:  {
+    __typename: "DeliveryProducts",
+    id: string,
+    quantity: number,
+    price: number | null,
+    product:  {
+      __typename: "Product",
+      id: string,
+      name: string,
+      description: string | null,
+      price: number | null,
+      deliveries:  {
+        __typename: "ModelDeliveryProductsConnection",
+        nextToken: string | null,
+        startedAt: number | null,
+      } | null,
+      _version: number,
+      _deleted: boolean | null,
+      _lastChangedAt: number,
+      createdAt: string,
+      updatedAt: string,
+    } | null,
+    delivery:  {
+      __typename: "Delivery",
+      id: string,
+      date: string,
+      route:  {
+        __typename: "Route",
+        id: string,
+        name: string,
+        status: string | null,
+        _version: number,
+        _deleted: boolean | null,
+        _lastChangedAt: number,
+        createdAt: string,
+        updatedAt: string,
+      } | null,
+      users:  {
+        __typename: "ModelDeliveryUsersConnection",
+        nextToken: string | null,
+        startedAt: number | null,
+      } | null,
+      products:  {
+        __typename: "ModelDeliveryProductsConnection",
+        nextToken: string | null,
+        startedAt: number | null,
+      } | null,
+      _version: number,
+      _deleted: boolean | null,
+      _lastChangedAt: number,
+      createdAt: string,
+      updatedAt: string,
+    } | null,
+    _version: number,
+    _deleted: boolean | null,
+    _lastChangedAt: number,
+    createdAt: string,
+    updatedAt: string,
+  } | null,
+};
+
+export type OnCreateProductSubscription = {
+  onCreateProduct:  {
+    __typename: "Product",
+    id: string,
+    name: string,
+    description: string | null,
+    price: number | null,
+    deliveries:  {
+      __typename: "ModelDeliveryProductsConnection",
+      items:  Array< {
+        __typename: "DeliveryProducts",
+        id: string,
+        quantity: number,
+        price: number | null,
+        _version: number,
+        _deleted: boolean | null,
+        _lastChangedAt: number,
+        createdAt: string,
+        updatedAt: string,
+      } | null > | null,
+      nextToken: string | null,
+      startedAt: number | null,
+    } | null,
+    _version: number,
+    _deleted: boolean | null,
+    _lastChangedAt: number,
+    createdAt: string,
+    updatedAt: string,
+  } | null,
+};
+
+export type OnUpdateProductSubscription = {
+  onUpdateProduct:  {
+    __typename: "Product",
+    id: string,
+    name: string,
+    description: string | null,
+    price: number | null,
+    deliveries:  {
+      __typename: "ModelDeliveryProductsConnection",
+      items:  Array< {
+        __typename: "DeliveryProducts",
+        id: string,
+        quantity: number,
+        price: number | null,
+        _version: number,
+        _deleted: boolean | null,
+        _lastChangedAt: number,
+        createdAt: string,
+        updatedAt: string,
+      } | null > | null,
+      nextToken: string | null,
+      startedAt: number | null,
+    } | null,
+    _version: number,
+    _deleted: boolean | null,
+    _lastChangedAt: number,
+    createdAt: string,
+    updatedAt: string,
+  } | null,
+};
+
+export type OnDeleteProductSubscription = {
+  onDeleteProduct:  {
+    __typename: "Product",
+    id: string,
+    name: string,
+    description: string | null,
+    price: number | null,
+    deliveries:  {
+      __typename: "ModelDeliveryProductsConnection",
+      items:  Array< {
+        __typename: "DeliveryProducts",
+        id: string,
+        quantity: number,
+        price: number | null,
         _version: number,
         _deleted: boolean | null,
         _lastChangedAt: number,

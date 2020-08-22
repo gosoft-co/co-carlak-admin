@@ -2,90 +2,6 @@
 /* eslint-disable */
 // this is an auto generated file. This will be overwritten
 
-export const createUser = /* GraphQL */ `
-  mutation CreateUser(
-    $input: CreateUserInput!
-    $condition: ModelUserConditionInput
-  ) {
-    createUser(input: $input, condition: $condition) {
-      id
-      username
-      deliveries {
-        items {
-          id
-          _version
-          _deleted
-          _lastChangedAt
-          createdAt
-          updatedAt
-        }
-        nextToken
-        startedAt
-      }
-      _version
-      _deleted
-      _lastChangedAt
-      createdAt
-      updatedAt
-    }
-  }
-`;
-export const updateUser = /* GraphQL */ `
-  mutation UpdateUser(
-    $input: UpdateUserInput!
-    $condition: ModelUserConditionInput
-  ) {
-    updateUser(input: $input, condition: $condition) {
-      id
-      username
-      deliveries {
-        items {
-          id
-          _version
-          _deleted
-          _lastChangedAt
-          createdAt
-          updatedAt
-        }
-        nextToken
-        startedAt
-      }
-      _version
-      _deleted
-      _lastChangedAt
-      createdAt
-      updatedAt
-    }
-  }
-`;
-export const deleteUser = /* GraphQL */ `
-  mutation DeleteUser(
-    $input: DeleteUserInput!
-    $condition: ModelUserConditionInput
-  ) {
-    deleteUser(input: $input, condition: $condition) {
-      id
-      username
-      deliveries {
-        items {
-          id
-          _version
-          _deleted
-          _lastChangedAt
-          createdAt
-          updatedAt
-        }
-        nextToken
-        startedAt
-      }
-      _version
-      _deleted
-      _lastChangedAt
-      createdAt
-      updatedAt
-    }
-  }
-`;
 export const createDeliveryUsers = /* GraphQL */ `
   mutation CreateDeliveryUsers(
     $input: CreateDeliveryUsersInput!
@@ -93,19 +9,7 @@ export const createDeliveryUsers = /* GraphQL */ `
   ) {
     createDeliveryUsers(input: $input, condition: $condition) {
       id
-      user {
-        id
-        username
-        deliveries {
-          nextToken
-          startedAt
-        }
-        _version
-        _deleted
-        _lastChangedAt
-        createdAt
-        updatedAt
-      }
+      user
       delivery {
         id
         date
@@ -120,6 +24,10 @@ export const createDeliveryUsers = /* GraphQL */ `
           updatedAt
         }
         users {
+          nextToken
+          startedAt
+        }
+        products {
           nextToken
           startedAt
         }
@@ -144,19 +52,7 @@ export const updateDeliveryUsers = /* GraphQL */ `
   ) {
     updateDeliveryUsers(input: $input, condition: $condition) {
       id
-      user {
-        id
-        username
-        deliveries {
-          nextToken
-          startedAt
-        }
-        _version
-        _deleted
-        _lastChangedAt
-        createdAt
-        updatedAt
-      }
+      user
       delivery {
         id
         date
@@ -171,6 +67,10 @@ export const updateDeliveryUsers = /* GraphQL */ `
           updatedAt
         }
         users {
+          nextToken
+          startedAt
+        }
+        products {
           nextToken
           startedAt
         }
@@ -195,19 +95,7 @@ export const deleteDeliveryUsers = /* GraphQL */ `
   ) {
     deleteDeliveryUsers(input: $input, condition: $condition) {
       id
-      user {
-        id
-        username
-        deliveries {
-          nextToken
-          startedAt
-        }
-        _version
-        _deleted
-        _lastChangedAt
-        createdAt
-        updatedAt
-      }
+      user
       delivery {
         id
         date
@@ -222,6 +110,10 @@ export const deleteDeliveryUsers = /* GraphQL */ `
           updatedAt
         }
         users {
+          nextToken
+          startedAt
+        }
+        products {
           nextToken
           startedAt
         }
@@ -268,6 +160,21 @@ export const createDelivery = /* GraphQL */ `
       users {
         items {
           id
+          user
+          _version
+          _deleted
+          _lastChangedAt
+          createdAt
+          updatedAt
+        }
+        nextToken
+        startedAt
+      }
+      products {
+        items {
+          id
+          quantity
+          price
           _version
           _deleted
           _lastChangedAt
@@ -314,6 +221,21 @@ export const updateDelivery = /* GraphQL */ `
       users {
         items {
           id
+          user
+          _version
+          _deleted
+          _lastChangedAt
+          createdAt
+          updatedAt
+        }
+        nextToken
+        startedAt
+      }
+      products {
+        items {
+          id
+          quantity
+          price
           _version
           _deleted
           _lastChangedAt
@@ -360,6 +282,21 @@ export const deleteDelivery = /* GraphQL */ `
       users {
         items {
           id
+          user
+          _version
+          _deleted
+          _lastChangedAt
+          createdAt
+          updatedAt
+        }
+        nextToken
+        startedAt
+      }
+      products {
+        items {
+          id
+          quantity
+          price
           _version
           _deleted
           _lastChangedAt
@@ -714,6 +651,279 @@ export const deleteAccount = /* GraphQL */ `
       routes {
         items {
           id
+          _version
+          _deleted
+          _lastChangedAt
+          createdAt
+          updatedAt
+        }
+        nextToken
+        startedAt
+      }
+      _version
+      _deleted
+      _lastChangedAt
+      createdAt
+      updatedAt
+    }
+  }
+`;
+export const createDeliveryProducts = /* GraphQL */ `
+  mutation CreateDeliveryProducts(
+    $input: CreateDeliveryProductsInput!
+    $condition: ModelDeliveryProductsConditionInput
+  ) {
+    createDeliveryProducts(input: $input, condition: $condition) {
+      id
+      quantity
+      price
+      product {
+        id
+        name
+        description
+        price
+        deliveries {
+          nextToken
+          startedAt
+        }
+        _version
+        _deleted
+        _lastChangedAt
+        createdAt
+        updatedAt
+      }
+      delivery {
+        id
+        date
+        route {
+          id
+          name
+          status
+          _version
+          _deleted
+          _lastChangedAt
+          createdAt
+          updatedAt
+        }
+        users {
+          nextToken
+          startedAt
+        }
+        products {
+          nextToken
+          startedAt
+        }
+        _version
+        _deleted
+        _lastChangedAt
+        createdAt
+        updatedAt
+      }
+      _version
+      _deleted
+      _lastChangedAt
+      createdAt
+      updatedAt
+    }
+  }
+`;
+export const updateDeliveryProducts = /* GraphQL */ `
+  mutation UpdateDeliveryProducts(
+    $input: UpdateDeliveryProductsInput!
+    $condition: ModelDeliveryProductsConditionInput
+  ) {
+    updateDeliveryProducts(input: $input, condition: $condition) {
+      id
+      quantity
+      price
+      product {
+        id
+        name
+        description
+        price
+        deliveries {
+          nextToken
+          startedAt
+        }
+        _version
+        _deleted
+        _lastChangedAt
+        createdAt
+        updatedAt
+      }
+      delivery {
+        id
+        date
+        route {
+          id
+          name
+          status
+          _version
+          _deleted
+          _lastChangedAt
+          createdAt
+          updatedAt
+        }
+        users {
+          nextToken
+          startedAt
+        }
+        products {
+          nextToken
+          startedAt
+        }
+        _version
+        _deleted
+        _lastChangedAt
+        createdAt
+        updatedAt
+      }
+      _version
+      _deleted
+      _lastChangedAt
+      createdAt
+      updatedAt
+    }
+  }
+`;
+export const deleteDeliveryProducts = /* GraphQL */ `
+  mutation DeleteDeliveryProducts(
+    $input: DeleteDeliveryProductsInput!
+    $condition: ModelDeliveryProductsConditionInput
+  ) {
+    deleteDeliveryProducts(input: $input, condition: $condition) {
+      id
+      quantity
+      price
+      product {
+        id
+        name
+        description
+        price
+        deliveries {
+          nextToken
+          startedAt
+        }
+        _version
+        _deleted
+        _lastChangedAt
+        createdAt
+        updatedAt
+      }
+      delivery {
+        id
+        date
+        route {
+          id
+          name
+          status
+          _version
+          _deleted
+          _lastChangedAt
+          createdAt
+          updatedAt
+        }
+        users {
+          nextToken
+          startedAt
+        }
+        products {
+          nextToken
+          startedAt
+        }
+        _version
+        _deleted
+        _lastChangedAt
+        createdAt
+        updatedAt
+      }
+      _version
+      _deleted
+      _lastChangedAt
+      createdAt
+      updatedAt
+    }
+  }
+`;
+export const createProduct = /* GraphQL */ `
+  mutation CreateProduct(
+    $input: CreateProductInput!
+    $condition: ModelProductConditionInput
+  ) {
+    createProduct(input: $input, condition: $condition) {
+      id
+      name
+      description
+      price
+      deliveries {
+        items {
+          id
+          quantity
+          price
+          _version
+          _deleted
+          _lastChangedAt
+          createdAt
+          updatedAt
+        }
+        nextToken
+        startedAt
+      }
+      _version
+      _deleted
+      _lastChangedAt
+      createdAt
+      updatedAt
+    }
+  }
+`;
+export const updateProduct = /* GraphQL */ `
+  mutation UpdateProduct(
+    $input: UpdateProductInput!
+    $condition: ModelProductConditionInput
+  ) {
+    updateProduct(input: $input, condition: $condition) {
+      id
+      name
+      description
+      price
+      deliveries {
+        items {
+          id
+          quantity
+          price
+          _version
+          _deleted
+          _lastChangedAt
+          createdAt
+          updatedAt
+        }
+        nextToken
+        startedAt
+      }
+      _version
+      _deleted
+      _lastChangedAt
+      createdAt
+      updatedAt
+    }
+  }
+`;
+export const deleteProduct = /* GraphQL */ `
+  mutation DeleteProduct(
+    $input: DeleteProductInput!
+    $condition: ModelProductConditionInput
+  ) {
+    deleteProduct(input: $input, condition: $condition) {
+      id
+      name
+      description
+      price
+      deliveries {
+        items {
+          id
+          quantity
+          price
           _version
           _deleted
           _lastChangedAt

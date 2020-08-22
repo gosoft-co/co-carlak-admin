@@ -8,8 +8,15 @@ import Home from './pages/Home'
 import UsersPage from './pages/Users'
 import RoutesPage from './pages/Routes'
 import DeliveryPage from './pages/routes/Delivery'
+import { useAuth } from './auth/AuthContext'
 
 function App() {
+  const { loading } = useAuth()
+
+  if (loading) {
+    return 'Authenticating...'
+  }
+
   return (
     <div className="App">
       <Switch>
