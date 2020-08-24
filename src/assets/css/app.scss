@@ -1,3 +1,7 @@
+:root {
+  --blue-grey-050: #f5f5f5;
+}
+
 .App {
   height: 100vh;
 }
@@ -13,6 +17,12 @@
 
   display: grid;
   grid-template-columns: 1fr 5fr 1fr;
+
+  button {
+    cursor: pointer;
+    border: 0;
+    background: transparent;
+  }
 }
 
 // CSS grid used for the dates
@@ -41,10 +51,21 @@
 .calendar {
   max-width: 600px;
   margin: 0 auto;
+  color: #001529;
 }
 
 .date-grid {
   margin-top: 0.5em;
+
+  .last {
+    color: rgba(0, 0, 0, 0.45);
+  }
+
+  .today {
+    background: #e6f7ff;
+    color: #1890ff;
+    border-top: 2px solid #1890ff;
+  }
 }
 
 /* Positioning the first day */
@@ -58,18 +79,9 @@
   border: 0;
   width: 4.5ch;
   height: 4.5ch;
-  border-radius: 50%;
   background-color: transparent;
-  color: var(--blue-grey-600);
+  //color: var(--blue-grey-600);
   cursor: pointer;
-}
-
-.overdue {
-  background-color: silver !important;
-  padding: 7px;
-  border-radius: 50%;
-  width: 30px !important;
-  height: 30px !important;
 }
 
 .date-grid button:hover,
@@ -83,4 +95,27 @@
 .date-grid button.is-selected {
   background-color: var(--teal-100);
   color: var(--teal-900);
+}
+
+.date-grid button.overdue.last {
+  color: #fa8c16;
+  background: #fff7e6;
+  border-top: 2px solid #fa8c16;
+  border-color: #ffd591;
+}
+
+.date-grid button.overdue {
+  border-color: #b7eb8f;
+  background-color: #f6ffed;
+  border-top: 2px solid #52c41a;
+  color: #52c41a;
+  padding: 7px;
+  width: 30px !important;
+  height: 30px !important;
+}
+
+.site-badge-count-4 .ant-badge-count {
+  background-color: #fff;
+  color: #999;
+  box-shadow: 0 0 0 1px #d9d9d9 inset;
 }

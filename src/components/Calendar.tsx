@@ -76,11 +76,17 @@ const Calendar = ({ handlerPickDay, shedules }: IState) => {
             }
             className={
               shedules &&
-              shedules.find(
+              (shedules.find(
                 (s: any) => s.date === currentMonthDates[i].format('YYYY-MM-DD')
               )
-                ? 'overdue'
-                : ''
+                ? 'overdue '
+                : '') +
+                (currentMonthDates[i].format('YYYY-MM-DD') ===
+                moment().format('YYYY-MM-DD')
+                  ? 'today'
+                  : currentMonthDates[i].diff(moment()) < 0
+                  ? ' last'
+                  : '')
             }
             onClick={(e) => handlerPickDay(e, currentMonthDates[i])}
           >
