@@ -34,7 +34,7 @@ import {
   Drawer,
   PageHeader,
   Tabs,
-  Descriptions,
+  Badge,
 } from 'antd'
 import { getRoute, getDelivery } from '../../graphql/queries'
 import { API, graphqlOperation } from 'aws-amplify'
@@ -64,12 +64,12 @@ const DeliveryPage = ({ match }: RouteComponentProps<TParams>) => {
     nextDelivery,
     currentDelivery,
     deliveryUsers,
-    deliveryFormData,
+    deliveryProducts,
   } = useAppStateContext()
+  const { loadUsers, employees } = useUserContext()
   const [loading, setLoading] = useState<boolean>(false)
   const [localError, setLocalError] = useState<any>()
   const [drawerVisibility, setDrawerVisibility] = useState<boolean>(false)
-  const { loadUsers, employees } = useUserContext()
 
   const [formState, setFormState] = useState<CreateDeliveryInput>({
     deliveryRouteId: match.params.routeId,
@@ -133,6 +133,13 @@ const DeliveryPage = ({ match }: RouteComponentProps<TParams>) => {
         )) as {
           data: GetDeliveryQuery
         }
+
+        console.log(delivery)
+
+        dispatch({
+          type: 'SET_DELIVERY_PRODUCTS',
+          payload: delivery.data.getDelivery?.products?.items as any[],
+        })
 
         dispatch({
           type: 'SET_DELIVERY_USERS',
@@ -257,7 +264,7 @@ const DeliveryPage = ({ match }: RouteComponentProps<TParams>) => {
     }
   }
 
-  const addDelivery = async () => {
+  /* const addDelivery = async () => {
     setLoading(true)
 
     try {
@@ -271,7 +278,7 @@ const DeliveryPage = ({ match }: RouteComponentProps<TParams>) => {
       console.log(err)
       setLoading(false)
     }
-  }
+  } */
 
   if (loading) {
     return <Skeleton active />
@@ -309,10 +316,12 @@ const DeliveryPage = ({ match }: RouteComponentProps<TParams>) => {
 
   return (
     <>
-      <Calendar
-        handlerPickDay={pickDay}
-        shedules={route?.getRoute?.deliveries?.items}
-      />
+      <Card style={{ maxWidth: 1000 }}>
+        <Calendar
+          handlerPickDay={pickDay}
+          shedules={route?.getRoute?.deliveries?.items}
+        />
+      </Card>
 
       {nextDelivery && (
         <Card style={{ maxWidth: 1000, margin: '0 auto' }}>
@@ -381,7 +390,18 @@ const DeliveryPage = ({ match }: RouteComponentProps<TParams>) => {
                   )}
                 </TabPane>
                 <TabPane tab="Productos" key="2">
-                  Productos
+                  <List
+                    itemLayout="horizontal"
+                    dataSource={deliveryProducts}
+                    renderItem={(item) => (
+                      <List.Item actions={[item.price, item.quantity]}>
+                        <List.Item.Meta
+                          title={item.product.name}
+                          /* description={item.product.description || ''} */
+                        />
+                      </List.Item>
+                    )}
+                  />
                 </TabPane>
               </Tabs>
             }
@@ -413,7 +433,8 @@ const DeliveryPage = ({ match }: RouteComponentProps<TParams>) => {
         }
       >
         <DeliveryForm
-          handleSubmitDeliveryForm={addDelivery}
+          setLoading={setLoading}
+          setDrawerVisibility={setDrawerVisibility}
           loading={loading}
         />
       </Drawer>

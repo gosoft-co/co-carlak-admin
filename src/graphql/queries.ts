@@ -37,7 +37,7 @@ export const syncDeliveryUsers = /* GraphQL */ `
       startedAt
     }
   }
-`;
+`
 export const syncDeliveries = /* GraphQL */ `
   query SyncDeliveries(
     $filter: ModelDeliveryFilterInput
@@ -82,7 +82,7 @@ export const syncDeliveries = /* GraphQL */ `
       startedAt
     }
   }
-`;
+`
 export const getDelivery = /* GraphQL */ `
   query GetDelivery($id: ID!) {
     getDelivery(id: $id) {
@@ -123,6 +123,9 @@ export const getDelivery = /* GraphQL */ `
         items {
           id
           quantity
+          product {
+            name
+          }
           price
           _version
           _deleted
@@ -140,7 +143,7 @@ export const getDelivery = /* GraphQL */ `
       updatedAt
     }
   }
-`;
+`
 export const listDeliverys = /* GraphQL */ `
   query ListDeliverys(
     $filter: ModelDeliveryFilterInput
@@ -179,7 +182,7 @@ export const listDeliverys = /* GraphQL */ `
       startedAt
     }
   }
-`;
+`
 export const syncRoutes = /* GraphQL */ `
   query SyncRoutes(
     $filter: ModelRouteFilterInput
@@ -215,7 +218,7 @@ export const syncRoutes = /* GraphQL */ `
       startedAt
     }
   }
-`;
+`
 export const getRoute = /* GraphQL */ `
   query GetRoute($id: ID!) {
     getRoute(id: $id) {
@@ -254,7 +257,7 @@ export const getRoute = /* GraphQL */ `
       updatedAt
     }
   }
-`;
+`
 export const listRoutes = /* GraphQL */ `
   query ListRoutes(
     $filter: ModelRouteFilterInput
@@ -284,7 +287,7 @@ export const listRoutes = /* GraphQL */ `
       startedAt
     }
   }
-`;
+`
 export const syncRouteAccounts = /* GraphQL */ `
   query SyncRouteAccounts(
     $filter: ModelRouteAccountsFilterInput
@@ -330,7 +333,7 @@ export const syncRouteAccounts = /* GraphQL */ `
       startedAt
     }
   }
-`;
+`
 export const syncAccounts = /* GraphQL */ `
   query SyncAccounts(
     $filter: ModelAccountFilterInput
@@ -362,7 +365,7 @@ export const syncAccounts = /* GraphQL */ `
       startedAt
     }
   }
-`;
+`
 export const getAccount = /* GraphQL */ `
   query GetAccount($id: ID!) {
     getAccount(id: $id) {
@@ -388,7 +391,7 @@ export const getAccount = /* GraphQL */ `
       updatedAt
     }
   }
-`;
+`
 export const listAccounts = /* GraphQL */ `
   query ListAccounts(
     $filter: ModelAccountFilterInput
@@ -414,7 +417,7 @@ export const listAccounts = /* GraphQL */ `
       startedAt
     }
   }
-`;
+`
 export const syncDeliveryProducts = /* GraphQL */ `
   query SyncDeliveryProducts(
     $filter: ModelDeliveryProductsFilterInput
@@ -462,7 +465,7 @@ export const syncDeliveryProducts = /* GraphQL */ `
       startedAt
     }
   }
-`;
+`
 export const syncProducts = /* GraphQL */ `
   query SyncProducts(
     $filter: ModelProductFilterInput
@@ -495,7 +498,7 @@ export const syncProducts = /* GraphQL */ `
       startedAt
     }
   }
-`;
+`
 export const getProduct = /* GraphQL */ `
   query GetProduct($id: ID!) {
     getProduct(id: $id) {
@@ -524,7 +527,7 @@ export const getProduct = /* GraphQL */ `
       updatedAt
     }
   }
-`;
+`
 export const listProducts = /* GraphQL */ `
   query ListProducts(
     $filter: ModelProductFilterInput
@@ -551,4 +554,4 @@ export const listProducts = /* GraphQL */ `
       startedAt
     }
   }
-`;
+`

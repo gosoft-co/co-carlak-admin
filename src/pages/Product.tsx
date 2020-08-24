@@ -16,6 +16,7 @@ import {
   deleteProduct,
 } from '../graphql/mutations'
 import ProductForm from './products/ProductForm'
+import { useAppStateContext } from '../context/AppState'
 
 export type Product = {
   id?: string
@@ -26,20 +27,20 @@ export type Product = {
   _deleted?: boolean
 }
 
-type AppState = {
+/* type AppState = {
   products: Product[]
   formData: Product
-}
+} */
 
-const reducer = (state: AppState, action: Action) => {
+/* const reducer = (state: AppState, action: Action) => {
   switch (action.type) {
-    case 'QUERY':
+    case 'QUERY_PRODUCTS':
       return { ...state, products: action.payload }
-    case 'SUBSCRIPTION':
+    case 'SUBSCRIPTION_PRODUCT':
       return { ...state, products: [...state.products, action.payload] }
-    case 'SET_FORM_DATA':
+    case 'SET_PRODUCT_FORM_DATA':
       return { ...state, formData: { ...state.formData, ...action.payload } }
-    case 'SET_FORM_EDIT_DATA':
+    case 'SET_PRODUCT_FORM_EDIT_DATA':
       return { ...state, formData: { ...state.formData, ...action.payload } }
     case 'UPDATE_PRODUCT_ITEM':
       return {
@@ -51,29 +52,29 @@ const reducer = (state: AppState, action: Action) => {
     default:
       return state
   }
-}
+} */
 
-type Action =
+/* type Action =
   | {
-      type: 'QUERY'
+      type: 'QUERY_PRODUCTS'
       payload: Product[]
     }
   | {
-      type: 'SUBSCRIPTION'
+      type: 'SUBSCRIPTION_PRODUCT'
       payload: Product
     }
   | {
-      type: 'SET_FORM_DATA'
+      type: 'SET_PRODUCT_FORM_DATA'
       payload: { [field: string]: string }
     }
   | {
-      type: 'SET_FORM_EDIT_DATA'
+      type: 'SET_PRODUCT_FORM_EDIT_DATA'
       payload: Product
     }
   | {
       type: 'UPDATE_PRODUCT_ITEM'
       payload: Product
-    }
+    } */
 
 type SubscriptionEvent<D> = {
   value: {
@@ -81,20 +82,27 @@ type SubscriptionEvent<D> = {
   }
 }
 
-const initialState: AppState = {
+/* const initialState: AppState = {
   products: [],
   formData: {
     name: '',
     description: '',
     price: 0,
   },
-}
+} */
 
 const ProductPage = () => {
   const [loading, setLoading] = useState<boolean>(false)
   const [localError, setLocalError] = useState<any>()
   const [drawerVisibility, setDrawerVisibility] = useState<boolean>(false)
-  const [state, dispatch] = useReducer(reducer, initialState)
+  const {
+    dispatch,
+    productsFormData,
+    initialState,
+    products,
+    getProductList,
+  } = useAppStateContext()
+  //const [state, dispatch] = useReducer(reducer, initialState)
 
   useEffect(() => {
     getProductList()
@@ -103,7 +111,7 @@ const ProductPage = () => {
     ) as any).subscribe({
       next: (eventData: SubscriptionEvent<{ onCreateProduct: Product }>) => {
         const payload = eventData.value.data.onCreateProduct
-        dispatch({ type: 'SUBSCRIPTION', payload })
+        dispatch({ type: 'SUBSCRIPTION_PRODUCT', payload })
       },
     })
 
@@ -125,22 +133,12 @@ const ProductPage = () => {
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) =>
     dispatch({
-      type: 'SET_FORM_DATA',
+      type: 'SET_PRODUCT_FORM_DATA',
       payload: { [e.target.name]: e.target.value },
     })
 
-  const getProductList = async () => {
-    const products = (await API.graphql(graphqlOperation(listProducts))) as {
-      data: ListProductsQuery
-    }
-    dispatch({
-      type: 'QUERY',
-      payload: products.data.listProducts?.items as Product[],
-    })
-  }
-
   const handleSubmitForm = () => {
-    if (state.formData.id) {
+    if (productsFormData.id) {
       editProduct()
     } else {
       createNewProduct()
@@ -149,7 +147,7 @@ const ProductPage = () => {
 
   const createNewProduct = async () => {
     setLoading(true)
-    const { name, description, price } = state.formData
+    const { name, description, price } = productsFormData
 
     const product = {
       name,
@@ -169,7 +167,7 @@ const ProductPage = () => {
 
   const editProduct = async () => {
     setLoading(true)
-    const { id, name, description, price, _version } = state.formData
+    const { id, name, description, price, _version } = productsFormData
 
     const product = {
       id,
@@ -215,7 +213,7 @@ const ProductPage = () => {
 
   const handleEditProduct = (product: Product) => {
     dispatch({
-      type: 'SET_FORM_EDIT_DATA',
+      type: 'SET_PRODUCT_FORM_EDIT_DATA',
       payload: { ...product },
     })
     setDrawerVisibility(true)
@@ -224,9 +222,9 @@ const ProductPage = () => {
   const toggleDrawer = (open: boolean) => {
     if (open === false) {
       dispatch({
-        type: 'SET_FORM_EDIT_DATA',
+        type: 'SET_PRODUCT_FORM_EDIT_DATA',
         payload: {
-          ...initialState.formData,
+          ...initialState.productsFormData,
           id: undefined,
           _version: undefined,
         },
@@ -248,7 +246,7 @@ const ProductPage = () => {
       </Tooltip>
       <List
         itemLayout="horizontal"
-        dataSource={state.products}
+        dataSource={products}
         renderItem={(item) => (
           <List.Item
             actions={[
@@ -298,7 +296,7 @@ const ProductPage = () => {
       />
       <Drawer
         title={
-          state.formData.id ? 'Actualizar Producto' : 'Crear nuevo producto'
+          productsFormData.id ? 'Actualizar Producto' : 'Crear nuevo producto'
         }
         width={520}
         onClose={() => toggleDrawer(false)}
@@ -323,7 +321,7 @@ const ProductPage = () => {
           loading={loading}
           handleChange={handleChange}
           handleSubmitForm={handleSubmitForm}
-          formData={state.formData}
+          formData={productsFormData}
         />
       </Drawer>
     </div>

@@ -21,6 +21,7 @@ import {
   FormOutlined,
   DeleteOutlined,
   CalendarOutlined,
+  BarcodeOutlined,
 } from '@ant-design/icons'
 import RouteForm from './routes/RouteForm'
 import { createRoute, updateRoute, deleteRoute } from '../graphql/mutations'
@@ -207,6 +208,24 @@ const RoutesPage = () => {
             </Space>
           )}
         />
+        <Column
+          title="Stock"
+          key=""
+          render={(record) => (
+            <Space size="middle">
+              <Tooltip title="">
+                <Link to={'routes/stocks'}>
+                  <Button
+                    shape="circle"
+                    icon={<BarcodeOutlined />}
+                    size="small"
+                  />
+                </Link>
+              </Tooltip>
+            </Space>
+          )}
+        />
+
         <Column
           title="Acciones"
           key="action"
