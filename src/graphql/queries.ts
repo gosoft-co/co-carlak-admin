@@ -125,6 +125,7 @@ export const getDelivery = /* GraphQL */ `
           quantity
           product {
             name
+            quantity
           }
           price
           _version
@@ -158,6 +159,15 @@ export const listDeliverys = /* GraphQL */ `
           id
           name
           status
+          accounts {
+            items {
+              account {
+                id
+                name
+                lastName
+              }
+            }
+          }
           _version
           _deleted
           _lastChangedAt
@@ -167,10 +177,23 @@ export const listDeliverys = /* GraphQL */ `
         users {
           nextToken
           startedAt
+          items {
+            user
+            _deleted
+          }
         }
         products {
           nextToken
           startedAt
+          items {
+            id
+            quantity
+            price
+            product {
+              name
+              description
+            }
+          }
         }
         _version
         _deleted

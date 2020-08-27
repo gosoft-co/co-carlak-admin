@@ -180,7 +180,7 @@ const RoutesPage = () => {
         />
       </Tooltip>
 
-      <Table dataSource={routes} rowKey="id">
+      <Table dataSource={routes} rowKey="id" loading={loading}>
         <Column title="Name" dataIndex="name" key="name" />
         <Column
           title="Estado"
