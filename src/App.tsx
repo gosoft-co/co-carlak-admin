@@ -7,10 +7,19 @@ import Authenticate from './pages/auth/Authenticate'
 import Home from './pages/Home'
 import UsersPage from './pages/Users'
 import RoutesPage from './pages/Routes'
-import Delivery from './pages/routes/Delivery'
+import DeliveryPage from './pages/routes/Delivery'
 import ProductPage from './pages/Product'
 
+//Context
+import { useAuth } from './auth/AuthContext'
+
 function App() {
+  const { loading } = useAuth()
+
+  if (loading) {
+    return 'Authenticating...'
+  }
+
   return (
     <div className="App">
       <Switch>
@@ -20,7 +29,11 @@ function App() {
         <SecuredRoute exact path={'/products'} component={ProductPage} />
         <SecuredRoute exact path={'/users'} component={UsersPage} />
         <SecuredRoute exact path={'/routes'} component={RoutesPage} />
-        <SecuredRoute exact path={'/routes/deliveries'} component={Delivery} />
+        <SecuredRoute
+          exact
+          path={'/routes/deliveries/:routeId'}
+          component={DeliveryPage}
+        />
         <SecuredRoute exact path={'/routes/new'} component={RoutesPage} />
         <SecuredRoute path={'/'} component={Home} />
       </Switch>

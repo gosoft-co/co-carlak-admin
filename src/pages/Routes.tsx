@@ -21,6 +21,7 @@ import {
   FormOutlined,
   DeleteOutlined,
   CalendarOutlined,
+  BarcodeOutlined,
 } from '@ant-design/icons'
 import RouteForm from './routes/RouteForm'
 import { createRoute, updateRoute, deleteRoute } from '../graphql/mutations'
@@ -62,6 +63,7 @@ const RoutesPage = () => {
         const response = await callGraphQL<ListRoutesQuery>(listRoutes, {
           variables: { filter: { _deleted: false } },
         })
+
         const routes = mapListRoutes(response)
         setRoutes(routes)
       } catch (error) {
@@ -178,7 +180,7 @@ const RoutesPage = () => {
         />
       </Tooltip>
 
-      <Table dataSource={routes} rowKey="id">
+      <Table dataSource={routes} rowKey="id" loading={loading}>
         <Column title="Name" dataIndex="name" key="name" />
         <Column
           title="Estado"
@@ -195,7 +197,7 @@ const RoutesPage = () => {
           render={(text, record: Route) => (
             <Space size="middle">
               <Tooltip title="Repartos">
-                <Link to={'/routes/deliveries'}>
+                <Link to={'/routes/deliveries/' + record.id}>
                   <Button
                     shape="circle"
                     icon={<CalendarOutlined />}
@@ -206,6 +208,24 @@ const RoutesPage = () => {
             </Space>
           )}
         />
+        <Column
+          title="Stock"
+          key=""
+          render={(record) => (
+            <Space size="middle">
+              <Tooltip title="">
+                <Link to={'routes/stocks'}>
+                  <Button
+                    shape="circle"
+                    icon={<BarcodeOutlined />}
+                    size="small"
+                  />
+                </Link>
+              </Tooltip>
+            </Space>
+          )}
+        />
+
         <Column
           title="Acciones"
           key="action"

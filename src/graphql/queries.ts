@@ -2,87 +2,6 @@
 /* eslint-disable */
 // this is an auto generated file. This will be overwritten
 
-export const syncUsers = /* GraphQL */ `
-  query SyncUsers(
-    $filter: ModelUserFilterInput
-    $limit: Int
-    $nextToken: String
-    $lastSync: AWSTimestamp
-  ) {
-    syncUsers(
-      filter: $filter
-      limit: $limit
-      nextToken: $nextToken
-      lastSync: $lastSync
-    ) {
-      items {
-        id
-        username
-        deliveries {
-          nextToken
-          startedAt
-        }
-        _version
-        _deleted
-        _lastChangedAt
-        createdAt
-        updatedAt
-      }
-      nextToken
-      startedAt
-    }
-  }
-`;
-export const getUser = /* GraphQL */ `
-  query GetUser($id: ID!) {
-    getUser(id: $id) {
-      id
-      username
-      deliveries {
-        items {
-          id
-          _version
-          _deleted
-          _lastChangedAt
-          createdAt
-          updatedAt
-        }
-        nextToken
-        startedAt
-      }
-      _version
-      _deleted
-      _lastChangedAt
-      createdAt
-      updatedAt
-    }
-  }
-`;
-export const listUsers = /* GraphQL */ `
-  query ListUsers(
-    $filter: ModelUserFilterInput
-    $limit: Int
-    $nextToken: String
-  ) {
-    listUsers(filter: $filter, limit: $limit, nextToken: $nextToken) {
-      items {
-        id
-        username
-        deliveries {
-          nextToken
-          startedAt
-        }
-        _version
-        _deleted
-        _lastChangedAt
-        createdAt
-        updatedAt
-      }
-      nextToken
-      startedAt
-    }
-  }
-`;
 export const syncDeliveryUsers = /* GraphQL */ `
   query SyncDeliveryUsers(
     $filter: ModelDeliveryUsersFilterInput
@@ -98,15 +17,7 @@ export const syncDeliveryUsers = /* GraphQL */ `
     ) {
       items {
         id
-        user {
-          id
-          username
-          _version
-          _deleted
-          _lastChangedAt
-          createdAt
-          updatedAt
-        }
+        user
         delivery {
           id
           date
@@ -126,7 +37,7 @@ export const syncDeliveryUsers = /* GraphQL */ `
       startedAt
     }
   }
-`;
+`
 export const syncDeliveries = /* GraphQL */ `
   query SyncDeliveries(
     $filter: ModelDeliveryFilterInput
@@ -157,6 +68,10 @@ export const syncDeliveries = /* GraphQL */ `
           nextToken
           startedAt
         }
+        products {
+          nextToken
+          startedAt
+        }
         _version
         _deleted
         _lastChangedAt
@@ -167,7 +82,7 @@ export const syncDeliveries = /* GraphQL */ `
       startedAt
     }
   }
-`;
+`
 export const getDelivery = /* GraphQL */ `
   query GetDelivery($id: ID!) {
     getDelivery(id: $id) {
@@ -194,6 +109,25 @@ export const getDelivery = /* GraphQL */ `
       users {
         items {
           id
+          user
+          _version
+          _deleted
+          _lastChangedAt
+          createdAt
+          updatedAt
+        }
+        nextToken
+        startedAt
+      }
+      products {
+        items {
+          id
+          quantity
+          product {
+            name
+            quantity
+          }
+          price
           _version
           _deleted
           _lastChangedAt
@@ -210,7 +144,7 @@ export const getDelivery = /* GraphQL */ `
       updatedAt
     }
   }
-`;
+`
 export const listDeliverys = /* GraphQL */ `
   query ListDeliverys(
     $filter: ModelDeliveryFilterInput
@@ -225,6 +159,15 @@ export const listDeliverys = /* GraphQL */ `
           id
           name
           status
+          accounts {
+            items {
+              account {
+                id
+                name
+                lastName
+              }
+            }
+          }
           _version
           _deleted
           _lastChangedAt
@@ -234,6 +177,23 @@ export const listDeliverys = /* GraphQL */ `
         users {
           nextToken
           startedAt
+          items {
+            user
+            _deleted
+          }
+        }
+        products {
+          nextToken
+          startedAt
+          items {
+            id
+            quantity
+            price
+            product {
+              name
+              description
+            }
+          }
         }
         _version
         _deleted
@@ -245,7 +205,7 @@ export const listDeliverys = /* GraphQL */ `
       startedAt
     }
   }
-`;
+`
 export const syncRoutes = /* GraphQL */ `
   query SyncRoutes(
     $filter: ModelRouteFilterInput
@@ -281,7 +241,7 @@ export const syncRoutes = /* GraphQL */ `
       startedAt
     }
   }
-`;
+`
 export const getRoute = /* GraphQL */ `
   query GetRoute($id: ID!) {
     getRoute(id: $id) {
@@ -292,6 +252,23 @@ export const getRoute = /* GraphQL */ `
         items {
           id
           date
+          users {
+            items {
+              user
+              _deleted
+            }
+          }
+          products {
+            items {
+              price
+              quantity
+              product {
+                id
+                name
+                _deleted
+              }
+            }
+          }
           _version
           _deleted
           _lastChangedAt
@@ -320,7 +297,7 @@ export const getRoute = /* GraphQL */ `
       updatedAt
     }
   }
-`;
+`
 export const listRoutes = /* GraphQL */ `
   query ListRoutes(
     $filter: ModelRouteFilterInput
@@ -350,7 +327,7 @@ export const listRoutes = /* GraphQL */ `
       startedAt
     }
   }
-`;
+`
 export const syncRouteAccounts = /* GraphQL */ `
   query SyncRouteAccounts(
     $filter: ModelRouteAccountsFilterInput
@@ -396,7 +373,7 @@ export const syncRouteAccounts = /* GraphQL */ `
       startedAt
     }
   }
-`;
+`
 export const syncAccounts = /* GraphQL */ `
   query SyncAccounts(
     $filter: ModelAccountFilterInput
@@ -428,7 +405,7 @@ export const syncAccounts = /* GraphQL */ `
       startedAt
     }
   }
-`;
+`
 export const getAccount = /* GraphQL */ `
   query GetAccount($id: ID!) {
     getAccount(id: $id) {
@@ -454,7 +431,7 @@ export const getAccount = /* GraphQL */ `
       updatedAt
     }
   }
-`;
+`
 export const listAccounts = /* GraphQL */ `
   query ListAccounts(
     $filter: ModelAccountFilterInput
@@ -480,7 +457,55 @@ export const listAccounts = /* GraphQL */ `
       startedAt
     }
   }
-`;
+`
+export const syncDeliveryProducts = /* GraphQL */ `
+  query SyncDeliveryProducts(
+    $filter: ModelDeliveryProductsFilterInput
+    $limit: Int
+    $nextToken: String
+    $lastSync: AWSTimestamp
+  ) {
+    syncDeliveryProducts(
+      filter: $filter
+      limit: $limit
+      nextToken: $nextToken
+      lastSync: $lastSync
+    ) {
+      items {
+        id
+        quantity
+        price
+        product {
+          id
+          name
+          description
+          price
+          _version
+          _deleted
+          _lastChangedAt
+          createdAt
+          updatedAt
+        }
+        delivery {
+          id
+          date
+          _version
+          _deleted
+          _lastChangedAt
+          createdAt
+          updatedAt
+        }
+        _version
+        _deleted
+        _lastChangedAt
+        createdAt
+        updatedAt
+      }
+      nextToken
+      startedAt
+    }
+  }
+`
 export const syncProducts = /* GraphQL */ `
   query SyncProducts(
     $filter: ModelProductFilterInput
@@ -499,6 +524,10 @@ export const syncProducts = /* GraphQL */ `
         name
         description
         price
+        deliveries {
+          nextToken
+          startedAt
+        }
         _version
         _deleted
         _lastChangedAt
@@ -509,7 +538,7 @@ export const syncProducts = /* GraphQL */ `
       startedAt
     }
   }
-`;
+`
 export const getProduct = /* GraphQL */ `
   query GetProduct($id: ID!) {
     getProduct(id: $id) {
@@ -517,6 +546,20 @@ export const getProduct = /* GraphQL */ `
       name
       description
       price
+      deliveries {
+        items {
+          id
+          quantity
+          price
+          _version
+          _deleted
+          _lastChangedAt
+          createdAt
+          updatedAt
+        }
+        nextToken
+        startedAt
+      }
       _version
       _deleted
       _lastChangedAt
@@ -524,7 +567,7 @@ export const getProduct = /* GraphQL */ `
       updatedAt
     }
   }
-`;
+`
 export const listProducts = /* GraphQL */ `
   query ListProducts(
     $filter: ModelProductFilterInput
@@ -537,6 +580,10 @@ export const listProducts = /* GraphQL */ `
         name
         description
         price
+        deliveries {
+          nextToken
+          startedAt
+        }
         _version
         _deleted
         _lastChangedAt
@@ -547,4 +594,4 @@ export const listProducts = /* GraphQL */ `
       startedAt
     }
   }
-`;
+`

@@ -24,7 +24,7 @@ const Sidebar = () => {
           <Link to={'/'}>Home</Link>
         </Menu.Item>
         <Menu.Item key="2" icon={<EnvironmentOutlined />}>
-          <Link to={'routes'}>Rutas</Link>
+          <Link to={'/routes'}>Rutas</Link>
         </Menu.Item>
         <Menu.Item key="3" icon={<UserOutlined />}>
           <Link to={'/users'}>Usuarios</Link>

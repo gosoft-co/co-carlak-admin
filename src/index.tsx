@@ -8,6 +8,7 @@ import Amplify from 'aws-amplify'
 import { AuthProvider } from './auth/AuthContext'
 import awsconfig from './aws-exports'
 import { UserProvider } from './context/UserContext'
+import { AppStateProvider } from './context/AppState'
 
 Amplify.configure({
   ...awsconfig,
@@ -26,9 +27,11 @@ Amplify.configure({
 ReactDOM.render(
   <BrowserRouter>
     <AuthProvider>
-      <UserProvider>
-        <App />
-      </UserProvider>
+      <AppStateProvider>
+        <UserProvider>
+          <App />
+        </UserProvider>
+      </AppStateProvider>
     </AuthProvider>
   </BrowserRouter>,
   document.getElementById('root')
