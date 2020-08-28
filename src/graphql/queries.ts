@@ -252,6 +252,23 @@ export const getRoute = /* GraphQL */ `
         items {
           id
           date
+          users {
+            items {
+              user
+              _deleted
+            }
+          }
+          products {
+            items {
+              price
+              quantity
+              product {
+                id
+                name
+                _deleted
+              }
+            }
+          }
           _version
           _deleted
           _lastChangedAt

@@ -6,7 +6,6 @@ import {
   CreateDeliveryMutation,
   CreateDeliveryMutationVariables,
   GetRouteQuery,
-  GetDeliveryQuery,
   CreateDeliveryUsersMutation,
 } from '../../API'
 import callGraphQL from '../../models/graphql-api'
@@ -17,7 +16,11 @@ import {
 } from '../../graphql/mutations'
 import { RouteComponentProps } from 'react-router-dom'
 import Delivery from '../../models/delivery'
-import { CloseOutlined } from '@ant-design/icons'
+import {
+  CloseOutlined,
+  CaretRightOutlined,
+  CaretLeftOutlined,
+} from '@ant-design/icons'
 import {
   Row,
   Col,
@@ -34,21 +37,14 @@ import {
   Drawer,
   PageHeader,
   Tabs,
-  Badge,
 } from 'antd'
-import { getRoute, getDelivery } from '../../graphql/queries'
+import { getRoute } from '../../graphql/queries'
 import { API, graphqlOperation } from 'aws-amplify'
 import { useUserContext } from '../../context/UserContext'
-import { onCreateDeliveryUsers } from '../../graphql/subscriptions'
 import DeliveryForm from './DeliveryForm'
 import { useAppStateContext } from '../../context/AppState'
 
 const { TabPane } = Tabs
-
-type DeliveryUser = {
-  deliveryUsersDeliveryId: string
-  user: string
-}
 
 type SubscriptionEvent<D> = {
   value: {
@@ -59,13 +55,8 @@ type SubscriptionEvent<D> = {
 type TParams = { routeId: string }
 
 const DeliveryPage = ({ match }: RouteComponentProps<TParams>) => {
-  const {
-    dispatch,
-    nextDelivery,
-    currentDelivery,
-    deliveryUsers,
-    deliveryProducts,
-  } = useAppStateContext()
+  const { dispatch, deliveryUsers, deliveryProducts } = useAppStateContext()
+
   const { loadUsers, employees } = useUserContext()
   const [loading, setLoading] = useState<boolean>(false)
   const [localError, setLocalError] = useState<any>()
@@ -77,6 +68,9 @@ const DeliveryPage = ({ match }: RouteComponentProps<TParams>) => {
   })
 
   const [route, setRoute] = useState<GetRouteQuery>()
+  const [deliveries, setDeliveries] = useState<Delivery[]>([])
+  const [deliveryCurrentIndex, setDeliveryCurrentIndex] = useState<number>()
+  const [toggleClass, setToggleClass] = useState<string | null>(null)
 
   useEffect(() => {
     const fetchDelivery = async () => {
@@ -88,25 +82,24 @@ const DeliveryPage = ({ match }: RouteComponentProps<TParams>) => {
 
         const deliveries = response.data.getRoute?.deliveries
           ?.items as Delivery[]
+
         const sortDeliveries = deliveries.sort((a, b) =>
           moment.utc(a.date).diff(moment.utc(b.date))
         )
 
-        const cDelivery = sortDeliveries.reduce((nd: Delivery[], d) => {
-          if (moment().diff(d.date) < 0) {
-            nd.push(d)
-          }
-          return nd
-        }, [])
-
-        dispatch({
-          type: 'SET_NEXT_DELIVERY',
-          payload: cDelivery[0],
-        })
+        setDeliveries(sortDeliveries)
+        setDeliveryCurrentIndex(
+          sortDeliveries.findIndex(
+            (d) =>
+              moment(d.date).format('YYYY-MM-DD') ===
+                moment().format('YYYY-MM-DD') ||
+              moment(d.date).diff(moment()) > 0
+          )
+        )
 
         dispatch({
           type: 'SET_DELIVERIES',
-          payload: cDelivery,
+          payload: sortDeliveries,
         })
 
         setRoute(response.data)
@@ -125,55 +118,54 @@ const DeliveryPage = ({ match }: RouteComponentProps<TParams>) => {
   }, [])
 
   useEffect(() => {
-    const fetchCurrentDelivery = async () => {
-      setLoading(true)
-      if (nextDelivery && nextDelivery.id) {
-        const delivery = (await API.graphql(
-          graphqlOperation(getDelivery, { id: nextDelivery.id })
-        )) as {
-          data: GetDeliveryQuery
-        }
-
-        console.log(delivery)
-
-        dispatch({
-          type: 'SET_DELIVERY_PRODUCTS',
-          payload: delivery.data.getDelivery?.products?.items as any[],
-        })
-
-        dispatch({
-          type: 'SET_DELIVERY_USERS',
-          payload:
-            delivery.data.getDelivery?.users?.items?.filter(
-              (d) => d && !d._deleted
-            ) || [],
-        })
-
-        dispatch({
-          type: 'CURRENT_DELIVERY',
-          payload: delivery.data.getDelivery as Delivery,
-        })
-      }
-      setLoading(false)
-    }
-    fetchCurrentDelivery()
-  }, [nextDelivery])
-
-  useEffect(() => {
-    const subscription = (API.graphql(
-      graphqlOperation(onCreateDeliveryUsers)
-    ) as any).subscribe({
-      next: (
-        eventData: SubscriptionEvent<{ onCreateDeliveryUsers: DeliveryUser }>
-      ) => {
-        const payload = eventData.value.data.onCreateDeliveryUsers
-        console.log(payload)
-        //dispatch({ type: 'UPDATE_PRODUCT_ITEM', payload })
-      },
+    if (deliveryCurrentIndex === undefined || deliveryCurrentIndex === -1)
+      return
+    dispatch({
+      type: 'SET_DELIVERY_PRODUCTS',
+      payload: deliveries[deliveryCurrentIndex].products?.items || [],
     })
 
-    return () => subscription.unsubscribe()
-  })
+    dispatch({
+      type: 'SET_DELIVERY_USERS',
+      payload:
+        deliveries[deliveryCurrentIndex].users?.items.filter(
+          (d) => d && !d._deleted
+        ) || [],
+    })
+  }, [deliveryCurrentIndex])
+
+  const findNextDelivery = () => {
+    if (deliveryCurrentIndex === undefined || deliveryCurrentIndex === -1)
+      return
+    setDeliveryCurrentIndex(
+      deliveries.findIndex(
+        (d) =>
+          d.id === deliveries[(deliveryCurrentIndex + 1) % deliveries.length].id
+      )
+    )
+    setToggleClass('animate__fadeIn')
+    setTimeout(() => {
+      setToggleClass(null)
+    }, 500)
+  }
+
+  const findPreviousDelivery = () => {
+    if (deliveryCurrentIndex === undefined || deliveryCurrentIndex === -1)
+      return
+    setDeliveryCurrentIndex(
+      deliveries.findIndex(
+        (d) =>
+          d.id ===
+          deliveries[
+            (deliveryCurrentIndex + deliveries.length - 1) % deliveries.length
+          ].id
+      )
+    )
+    setToggleClass('animate__fadeIn')
+    setTimeout(() => {
+      setToggleClass(null)
+    }, 500)
+  }
 
   const pickDay = (
     e: React.MouseEvent<HTMLButtonElement, MouseEvent>,
@@ -216,7 +208,8 @@ const DeliveryPage = ({ match }: RouteComponentProps<TParams>) => {
 
   const addUserToDelivery = async (user: any) => {
     setLoading(true)
-    const { id } = currentDelivery
+    if (deliveryCurrentIndex === undefined) return
+    const { id } = deliveries[deliveryCurrentIndex]
 
     try {
       const response = (await API.graphql(
@@ -264,22 +257,6 @@ const DeliveryPage = ({ match }: RouteComponentProps<TParams>) => {
     }
   }
 
-  /* const addDelivery = async () => {
-    setLoading(true)
-
-    try {
-      await API.graphql(
-        graphqlOperation(createDelivery, { input: { ...deliveryFormData } })
-      )
-
-      setDrawerVisibility(false)
-      setLoading(false)
-    } catch (err) {
-      console.log(err)
-      setLoading(false)
-    }
-  } */
-
   if (loading) {
     return <Skeleton active />
   }
@@ -316,98 +293,130 @@ const DeliveryPage = ({ match }: RouteComponentProps<TParams>) => {
 
   return (
     <>
-      <Card style={{ maxWidth: 1000 }}>
+      <Card style={{ maxWidth: 1000, margin: '0 auto' }}>
         <Calendar
           handlerPickDay={pickDay}
           shedules={route?.getRoute?.deliveries?.items}
         />
       </Card>
 
-      {nextDelivery && (
+      {deliveries.length && (
         <Card style={{ maxWidth: 1000, margin: '0 auto' }}>
-          <PageHeader
-            className="site-page-header-responsive"
-            onBack={() => window.history.back()}
-            title={currentDelivery && currentDelivery.date}
-            subTitle="Reparto"
-            extra={[]}
-            footer={
-              <Tabs defaultActiveKey="1">
-                <TabPane tab="Usuarios" key="1">
-                  <AutoComplete
-                    style={{ width: '100%', marginTop: 10 }}
-                    options={employees
-                      .map((u) => ({ value: u.Username }))
-                      .filter(
-                        (u) => !deliveryUsers.find((x) => u.value === x.user)
-                      )}
-                    placeholder="Buscar usuario"
-                    filterOption={(inputValue, option) =>
-                      option?.value
-                        .toUpperCase()
-                        .indexOf(inputValue.toUpperCase()) !== -1
-                    }
-                    onSelect={addUserToDelivery}
-                  />
+          <Row>
+            <Col flex="50px" className="deliveryButtonPrevious">
+              <Tooltip title="Entrega anterior">
+                <Button
+                  type="primary"
+                  shape="circle"
+                  onClick={findPreviousDelivery}
+                  icon={<CaretLeftOutlined />}
+                />
+              </Tooltip>
+            </Col>
+            <Col
+              flex="auto"
+              className={toggleClass ? 'animate__animated ' + toggleClass : ''}
+            >
+              <PageHeader
+                className="site-page-header-responsive"
+                onBack={() => window.history.back()}
+                title={
+                  deliveryCurrentIndex !== undefined
+                    ? deliveries[deliveryCurrentIndex].date
+                    : ''
+                }
+                subTitle="Reparto"
+                extra={[]}
+                footer={
+                  <Tabs defaultActiveKey="1">
+                    <TabPane tab="Usuarios" key="1">
+                      <AutoComplete
+                        style={{ width: '100%', marginTop: 10 }}
+                        options={employees
+                          .map((u) => ({ value: u.Username }))
+                          .filter(
+                            (u) =>
+                              !deliveryUsers.find((x) => u.value === x.user)
+                          )}
+                        placeholder="Buscar usuario"
+                        filterOption={(inputValue, option) =>
+                          option?.value
+                            .toUpperCase()
+                            .indexOf(inputValue.toUpperCase()) !== -1
+                        }
+                        onSelect={addUserToDelivery}
+                      />
 
-                  {loading && <Spin tip="Loading..."></Spin>}
-                  {!loading && (
-                    <List
-                      itemLayout="horizontal"
-                      dataSource={deliveryUsers}
-                      renderItem={(item) =>
-                        !item._deleted && (
-                          <List.Item
-                            actions={[
-                              <Tooltip title="Eliminar">
-                                <Button
-                                  shape="circle"
-                                  icon={<CloseOutlined />}
-                                  size="small"
-                                  onClick={() => handleRemoveUser(item)}
+                      {loading && <Spin tip="Loading..."></Spin>}
+                      {!loading && (
+                        <List
+                          itemLayout="horizontal"
+                          dataSource={deliveryUsers}
+                          renderItem={(item) =>
+                            !item._deleted && (
+                              <List.Item
+                                actions={[
+                                  <Tooltip title="Eliminar">
+                                    <Button
+                                      shape="circle"
+                                      icon={<CloseOutlined />}
+                                      size="small"
+                                      onClick={() => handleRemoveUser(item)}
+                                    />
+                                  </Tooltip>,
+                                ]}
+                              >
+                                <List.Item.Meta
+                                  avatar={
+                                    <Avatar
+                                      style={{
+                                        color: '#f56a00',
+                                        backgroundColor: '#fde3cf',
+                                      }}
+                                    >
+                                      {item.user.slice(0, 1)}
+                                    </Avatar>
+                                  }
+                                  title={item.user}
+                                  description={item.user}
                                 />
-                              </Tooltip>,
-                            ]}
-                          >
+                              </List.Item>
+                            )
+                          }
+                        />
+                      )}
+                    </TabPane>
+                    <TabPane tab="Productos" key="2">
+                      <List
+                        itemLayout="horizontal"
+                        dataSource={deliveryProducts}
+                        renderItem={(item) => (
+                          <List.Item actions={[item.price, item.quantity]}>
                             <List.Item.Meta
-                              avatar={
-                                <Avatar
-                                  style={{
-                                    color: '#f56a00',
-                                    backgroundColor: '#fde3cf',
-                                  }}
-                                >
-                                  {item.user.slice(0, 1)}
-                                </Avatar>
-                              }
-                              title={item.user}
-                              description={item.user}
+                              title={item.product.name}
+                              /* description={item.product.description || ''} */
                             />
                           </List.Item>
-                        )
-                      }
-                    />
-                  )}
-                </TabPane>
-                <TabPane tab="Productos" key="2">
-                  <List
-                    itemLayout="horizontal"
-                    dataSource={deliveryProducts}
-                    renderItem={(item) => (
-                      <List.Item actions={[item.price, item.quantity]}>
-                        <List.Item.Meta
-                          title={item.product.name}
-                          /* description={item.product.description || ''} */
-                        />
-                      </List.Item>
-                    )}
-                  />
-                </TabPane>
-              </Tabs>
-            }
-          >
-            <Content extra={extraContent}></Content>
-          </PageHeader>
+                        )}
+                      />
+                    </TabPane>
+                  </Tabs>
+                }
+              >
+                <Content extra={extraContent}></Content>
+              </PageHeader>
+            </Col>
+            <Col flex="50px" className="deliveryButtonNext">
+              <Tooltip title="Entrega siguiente">
+                <Button
+                  type="primary"
+                  shape="circle"
+                  onClick={findNextDelivery}
+                  icon={<CaretRightOutlined />}
+                />
+              </Tooltip>
+            </Col>
+          </Row>
         </Card>
       )}
 
