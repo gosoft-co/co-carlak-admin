@@ -115,12 +115,14 @@ const DeliveryForm = ({ loading, setLoading, setDrawerVisibility }: IState) => {
       {!stateLoading ? (
         <List
           itemLayout="horizontal"
-          dataSource={products.map((p) => ({
-            ...p,
-            quantity:
-              defaultProductsDelivery.find((pd) => pd.id === p.id)?.quantity ||
-              0,
-          }))}
+          dataSource={products
+            .filter((p) => !p._deleted)
+            .map((p) => ({
+              ...p,
+              quantity:
+                defaultProductsDelivery.find((pd) => pd.id === p.id)
+                  ?.quantity || 0,
+            }))}
           renderItem={(item) => (
             <List.Item
               actions={[
