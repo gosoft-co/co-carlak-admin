@@ -14,7 +14,7 @@ import {
   deleteProduct,
 } from '../graphql/mutations'
 import ProductForm from './products/ProductForm'
-import { useAppStateContext } from '../context/AppState'
+import { useAppStateContext, SubscriptionEvent } from '../context/AppState'
 
 export type Product = {
   id?: string
@@ -23,12 +23,6 @@ export type Product = {
   price: number
   _version?: number
   _deleted?: boolean
-}
-
-type SubscriptionEvent<D> = {
-  value: {
-    data: D
-  }
 }
 
 const ProductPage = () => {
@@ -41,6 +35,7 @@ const ProductPage = () => {
     initialState,
     products,
     getProductList,
+    stateLoading,
   } = useAppStateContext()
 
   useEffect(() => {
@@ -186,6 +181,7 @@ const ProductPage = () => {
       </Tooltip>
       <List
         itemLayout="horizontal"
+        loading={stateLoading || loading}
         dataSource={products.filter((p) => !p._deleted)}
         renderItem={(item) => (
           <List.Item

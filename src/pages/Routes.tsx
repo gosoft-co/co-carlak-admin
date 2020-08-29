@@ -1,14 +1,8 @@
 import React, { useEffect, useState } from 'react'
 import { API, graphqlOperation } from 'aws-amplify'
-import { listRoutes } from './../graphql/queries'
+
 import {
-  ListRoutesQuery,
-  CreateRouteMutation,
   CreateRouteInput,
-  CreateRouteMutationVariables,
-  OnCreateRouteSubscription,
-  UpdateRouteMutation,
-  UpdateRouteMutationVariables,
   UpdateRouteInput,
   DeleteRouteMutation,
   DeleteRouteMutationVariables,
@@ -25,23 +19,13 @@ import {
 } from '@ant-design/icons'
 import RouteForm from './routes/RouteForm'
 import { createRoute, updateRoute, deleteRoute } from '../graphql/mutations'
-import Route, { mapListRoutes } from '../models/route'
-import callGraphQL, { SubscriptionValue } from '../models/graphql-api'
-import { onCreateRoute } from '../graphql/subscriptions'
+import Route from '../models/route'
+import callGraphQL from '../models/graphql-api'
+import { onCreateRoute, onUpdateRoute } from '../graphql/subscriptions'
 import { Link } from 'react-router-dom'
+import { useAppStateContext, SubscriptionEvent } from '../context/AppState'
 
 const { Column } = Table
-
-function mapOnCreateRouteSubscription(
-  createRouteSubscription: OnCreateRouteSubscription
-): Route {
-  const { id, name, status } = createRouteSubscription.onCreateRoute || {}
-  return {
-    id,
-    name,
-    status,
-  } as Route
-}
 
 const initialState = {
   name: '',
@@ -49,46 +33,41 @@ const initialState = {
 }
 
 const RoutesPage = () => {
-  const [drawerVisible, setDrawerVisible] = useState<boolean>(false)
+  const { routes, getRouteList, dispatch, stateLoading } = useAppStateContext()
+  const [drawerVisibility, setDrawerVisibility] = useState<boolean>(false)
   const [formState, setFormState] = useState<
     CreateRouteInput | UpdateRouteInput
   >(initialState)
   const [loading, setLoading] = useState<boolean>(false)
   const [localError, setLocalError] = useState<any>()
-  const [routes, setRoutes] = useState<Route[]>()
 
   useEffect(() => {
-    const fetchRoutes = async () => {
-      try {
-        const response = await callGraphQL<ListRoutesQuery>(listRoutes, {
-          variables: { filter: { _deleted: false } },
-        })
+    if (!routes.length) getRouteList()
 
-        const routes = mapListRoutes(response)
-        setRoutes(routes)
-      } catch (error) {
-        console.error('Error fetching routes', error)
-      }
-    }
-    fetchRoutes()
+    const subscription = (API.graphql(
+      graphqlOperation(onCreateRoute)
+    ) as any).subscribe({
+      next: (eventData: SubscriptionEvent<{ onCreateRoute: Route }>) => {
+        const payload = eventData.value.data.onCreateRoute
+        dispatch({ type: 'SUBSCRIPTION_ROUTE', payload })
+      },
+    })
+
+    return () => subscription.unsubscribe()
   }, [])
 
   useEffect(() => {
-    // @ts-ignore
-    const subscription = API.graphql(graphqlOperation(onCreateRoute)).subscribe(
-      {
-        next: (response: SubscriptionValue<OnCreateRouteSubscription>) => {
-          const route = mapOnCreateRouteSubscription(response.value.data)
-          console.log(route)
-          let aroute = routes
-          aroute?.push(route)
-          setRoutes(aroute)
-        },
-      }
-    )
+    const onUpdateSubscription = (API.graphql(
+      graphqlOperation(onUpdateRoute)
+    ) as any).subscribe({
+      next: (eventData: SubscriptionEvent<{ onUpdateRoute: Route }>) => {
+        const payload = eventData.value.data.onUpdateRoute
+        dispatch({ type: 'UPDATE_ROUTE_ITEM', payload })
+      },
+    })
 
-    return () => subscription.unsubscribe()
-  })
+    return () => onUpdateSubscription.unsubscribe()
+  }, [])
 
   const handleForm = () => {
     if (formState.id) {
@@ -103,15 +82,18 @@ const RoutesPage = () => {
 
   const handleCreateRoute = async (formState: CreateRouteInput) => {
     setLoading(true)
+
     try {
-      const response = await callGraphQL<CreateRouteMutation>(createRoute, {
-        input: omit(['_version'], {
-          ...formState,
-        }),
-      } as CreateRouteMutationVariables)
+      await API.graphql(
+        graphqlOperation(createRoute, {
+          input: omit(['_version'], {
+            ...formState,
+          }),
+        })
+      )
       setFormState(initialState)
+      setDrawerVisibility(false)
       setLoading(false)
-      setDrawerVisible(false)
     } catch (err) {
       setLocalError(err)
       setLoading(false)
@@ -121,18 +103,24 @@ const RoutesPage = () => {
 
   const handleEditRoute = (route: UpdateRouteInput) => {
     setFormState(route)
-    setDrawerVisible(true)
+    setDrawerVisibility(true)
   }
 
   const handleUpdateRoute = async (route: UpdateRouteInput) => {
     setLoading(true)
+    const { id, name, _version } = formState
+
+    const currentRoute = {
+      id,
+      name,
+      _version,
+    }
+
     try {
-      await callGraphQL<UpdateRouteMutation>(updateRoute, {
-        input: route,
-      } as UpdateRouteMutationVariables)
+      await API.graphql(graphqlOperation(updateRoute, { input: currentRoute }))
       setFormState(initialState)
       setLoading(false)
-      setDrawerVisible(false)
+      setDrawerVisibility(false)
     } catch (err) {
       setLocalError(err)
       setLoading(false)
@@ -148,7 +136,7 @@ const RoutesPage = () => {
       } as DeleteRouteMutationVariables)
       setFormState(initialState)
       setLoading(false)
-      setDrawerVisible(false)
+      setDrawerVisibility(false)
     } catch (err) {
       setLocalError(err)
       setLoading(false)
@@ -165,7 +153,7 @@ const RoutesPage = () => {
 
   const toggleDrawer = (open: boolean) => {
     setFormState(initialState)
-    setDrawerVisible(open)
+    setDrawerVisibility(open)
   }
 
   return (
@@ -180,7 +168,7 @@ const RoutesPage = () => {
         />
       </Tooltip>
 
-      <Table dataSource={routes} rowKey="id" loading={loading}>
+      <Table dataSource={routes} rowKey="id" loading={stateLoading || loading}>
         <Column title="Name" dataIndex="name" key="name" />
         <Column
           title="Estado"
@@ -277,7 +265,7 @@ const RoutesPage = () => {
         title="Crear nueva ruta"
         width={520}
         onClose={() => toggleDrawer(false)}
-        visible={drawerVisible}
+        visible={drawerVisibility}
         bodyStyle={{ paddingBottom: 80 }}
         footer={
           <div
