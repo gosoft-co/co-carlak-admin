@@ -46,12 +46,6 @@ import { useAppStateContext } from '../../context/AppState'
 
 const { TabPane } = Tabs
 
-type SubscriptionEvent<D> = {
-  value: {
-    data: D
-  }
-}
-
 type TParams = { routeId: string }
 
 const DeliveryPage = ({ match }: RouteComponentProps<TParams>) => {
