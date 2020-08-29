@@ -1,4 +1,4 @@
-import React, { useState, useReducer, useEffect } from 'react'
+import React, { useState, useEffect } from 'react'
 import {
   PlusOutlined,
   FormOutlined,
@@ -8,8 +8,6 @@ import {
 import { Tooltip, Button, Drawer, List, Avatar, Statistic, Badge } from 'antd'
 import { API, graphqlOperation } from 'aws-amplify'
 import { onCreateProduct, onUpdateProduct } from '../graphql/subscriptions'
-import { listProducts } from '../graphql/queries'
-import { ListProductsQuery } from '../API'
 import {
   createProduct,
   updateProduct,
@@ -27,69 +25,11 @@ export type Product = {
   _deleted?: boolean
 }
 
-/* type AppState = {
-  products: Product[]
-  formData: Product
-} */
-
-/* const reducer = (state: AppState, action: Action) => {
-  switch (action.type) {
-    case 'QUERY_PRODUCTS':
-      return { ...state, products: action.payload }
-    case 'SUBSCRIPTION_PRODUCT':
-      return { ...state, products: [...state.products, action.payload] }
-    case 'SET_PRODUCT_FORM_DATA':
-      return { ...state, formData: { ...state.formData, ...action.payload } }
-    case 'SET_PRODUCT_FORM_EDIT_DATA':
-      return { ...state, formData: { ...state.formData, ...action.payload } }
-    case 'UPDATE_PRODUCT_ITEM':
-      return {
-        ...state,
-        products: state.products.map((product, i) =>
-          product.id === action.payload.id ? action.payload : product
-        ),
-      }
-    default:
-      return state
-  }
-} */
-
-/* type Action =
-  | {
-      type: 'QUERY_PRODUCTS'
-      payload: Product[]
-    }
-  | {
-      type: 'SUBSCRIPTION_PRODUCT'
-      payload: Product
-    }
-  | {
-      type: 'SET_PRODUCT_FORM_DATA'
-      payload: { [field: string]: string }
-    }
-  | {
-      type: 'SET_PRODUCT_FORM_EDIT_DATA'
-      payload: Product
-    }
-  | {
-      type: 'UPDATE_PRODUCT_ITEM'
-      payload: Product
-    } */
-
 type SubscriptionEvent<D> = {
   value: {
     data: D
   }
 }
-
-/* const initialState: AppState = {
-  products: [],
-  formData: {
-    name: '',
-    description: '',
-    price: 0,
-  },
-} */
 
 const ProductPage = () => {
   const [loading, setLoading] = useState<boolean>(false)
@@ -102,10 +42,10 @@ const ProductPage = () => {
     products,
     getProductList,
   } = useAppStateContext()
-  //const [state, dispatch] = useReducer(reducer, initialState)
 
   useEffect(() => {
-    getProductList()
+    if (!products.length) getProductList()
+
     const subscription = (API.graphql(
       graphqlOperation(onCreateProduct)
     ) as any).subscribe({
@@ -129,7 +69,7 @@ const ProductPage = () => {
     })
 
     return () => onUpdateSubscription.unsubscribe()
-  })
+  }, [])
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) =>
     dispatch({
@@ -189,7 +129,7 @@ const ProductPage = () => {
     }
   }
 
-  const handleDeleteProduct = async (item: Product) => {
+  /* const handleDeleteProduct = async (item: Product) => {
     setLoading(true)
 
     const { id, _version } = item
@@ -209,7 +149,7 @@ const ProductPage = () => {
       setLoading(false)
       console.log(err)
     }
-  }
+  } */
 
   const handleEditProduct = (product: Product) => {
     dispatch({
@@ -246,7 +186,7 @@ const ProductPage = () => {
       </Tooltip>
       <List
         itemLayout="horizontal"
-        dataSource={products}
+        dataSource={products.filter((p) => !p._deleted)}
         renderItem={(item) => (
           <List.Item
             actions={[
@@ -256,7 +196,7 @@ const ProductPage = () => {
                 count={30}
                 style={{ backgroundColor: '#52c41a' }}
               />,
-              item._deleted ? 'Inactivo' : 'Activo',
+              /* item._deleted ? 'Inactivo' : 'Activo',
               !item._deleted ? (
                 <Tooltip title="Desactivar">
                   <Button
@@ -275,13 +215,13 @@ const ProductPage = () => {
                     onClick={() => handleDeleteProduct(item)}
                   />
                 </Tooltip>
-              ),
+              ), */
               <Tooltip title="Editar">
                 <Button
                   shape="circle"
                   icon={<FormOutlined />}
                   size="small"
-                  onClick={() => handleDeleteProduct(item)}
+                  onClick={() => handleEditProduct(item)}
                 />
               </Tooltip>,
             ]}

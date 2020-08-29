@@ -49,15 +49,7 @@ const ProductForm = ({
         />
       </Form.Item>
 
-      <Form.Item
-        name="description"
-        rules={[
-          {
-            required: true,
-            message: 'Por favor digite la descripción del producto!',
-          },
-        ]}
-      >
+      <Form.Item name="description">
         <Input
           name="description"
           onChange={handleChange}
